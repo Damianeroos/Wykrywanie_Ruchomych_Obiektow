@@ -10,7 +10,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 
-#include <opencv2/opencv.hpp>
+#include <opencv4/opencv2/opencv.hpp>
 
 namespace Ui {
 class MainWindow;

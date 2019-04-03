@@ -71,34 +71,32 @@ void MainWindow::on_OpenFile_clicked()
  */
 void MainWindow::on_PlayButton_clicked()
 {
-    cv::Mat frame;
-    cv::Mat background_frame;
+    cv::Mat frame,tempframe,frame2;
 
     if(!video.isOpened()){
         video.open(file_name.toStdString());
     }
 
-    //pobieramy 30 pierwszysch ramek i tworzymy średni obraz tła
-    while(video.isOpened()){
-        for(int i = 0 ; i < 30 ; i++){
-            video >> frame;
-            background_frame += frame;
-        }
-    }
-    background_frame /= 30;
-    video.release();
-    if(!video.isOpened()){
-        video.open(file_name.toStdString());
-    }
-    //***********************************************
+
+    video>> frame;
+    tempframe = frame.clone();
     while(video.isOpened()){
         video >> frame;
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
+        ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!frame.empty()){
             /*przetwarzamy i wyswietlamy ramki*/
             QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
 
+            //cv::subtract(tempframe,frame,frame2);
+            frame2 = frame - tempframe;
+            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),0);
+            cv::cvtColor(frame2, frame2, cv::COLOR_BGR2GRAY);
+            cv::threshold(frame2,frame2,30,255,cv::THRESH_BINARY);
+            //cv::cvtColor(frame2,frame2,cv::COLOR_GRAY2BGR);
+            QImage qimg2(frame2.data, frame2.cols, frame2.rows, frame2.step, QImage::Format_Grayscale8);
+            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
 
             if(cv::waitKey(30) >= 0) break;
         }

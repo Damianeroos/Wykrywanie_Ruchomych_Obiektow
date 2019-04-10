@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['mainwindow',['MainWindow',['../class_main_window.html#a996c5a2b6f77944776856f08ec30858d',1,'MainWindow']]]
+  ['closeevent',['closeEvent',['../class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425',1,'MainWindow']]]
 ];

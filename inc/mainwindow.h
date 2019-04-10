@@ -1,3 +1,7 @@
+//testy funkcjonalne
+//coding convetions
+
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -40,6 +44,16 @@ public:
 void closeEvent(QCloseEvent *event);
 
 private:
+/**
+ * @brief Funkcja wylicza średni obraz tła z pliku video.
+ *
+ * @param NumberOfFrames liczba ramek, z których obliczymy średni obraz tła.
+ * @param avrFrame wyliczony średni obraz tła
+ * @return bool stan zakończenia działania metody
+ *  true  - sukces
+ *  false - nie udało się wyliczyć średniej ramki tła
+ */
+bool ComputeAverageBacgroundFrame(unsigned int NumberOfFrames,cv::Mat & avrFrame);
 QGraphicsPixmapItem leftPixmap,rightPixmap; /**< TODO: describe */
 cv::VideoCapture video; /**< TODO: describe */
 /**

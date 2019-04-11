@@ -63,11 +63,13 @@ bool MainWindow::ComputeAverageBacgroundFrame(unsigned int NumberOfFrames, cv::M
     }
 
     video >> tempFrame;
+    // tempFrame = equalizeIntensity(tempFrame);
     avrFrame = tempFrame.clone();
     avrFrame.convertTo(avrFrame,CV_32F);
     cv::accumulate(tempFrame,avrFrame);
     for(unsigned int i = 0 ; i < NumberOfFrames - 1 ; i++){
         video >> tempFrame;
+        //  tempFrame = equalizeIntensity(tempFrame);
         if(tempFrame.empty()){
             tempFrame.release();
             return false;
@@ -82,6 +84,29 @@ bool MainWindow::ComputeAverageBacgroundFrame(unsigned int NumberOfFrames, cv::M
     video.release();
 
     return true;
+}
+
+cv::Mat MainWindow::equalizeIntensity(const cv::Mat &inputImage)
+{
+    if(inputImage.channels() >= 3)
+    {
+        cv::Mat ycrcb;
+
+        cv::cvtColor(inputImage,ycrcb,cv::COLOR_BGR2YCrCb);
+
+        std::vector<cv::Mat> channels;
+        split(ycrcb,channels);
+
+        cv::equalizeHist(channels[0], channels[0]);
+
+        cv::Mat result;
+        merge(channels,ycrcb);
+        cv::cvtColor(ycrcb,result,cv::COLOR_YCrCb2BGR);
+
+        return result;
+    }
+
+    return cv::Mat();
 }
 
 /**
@@ -132,24 +157,35 @@ void MainWindow::on_PlayButton_clicked()
 
 
     video>> frame;
-   // tempframe = frame.clone();
+    // tempframe = frame.clone();
     while(video.isOpened()){
         video >> frame;
+        //  frame = equalizeIntensity(frame);
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!frame.empty()){
             /*przetwarzamy i wyswietlamy ramki*/
 
-            cv::subtract(frame,tempframe,frame2);
-            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),5);
+            //cv::subtract(frame,tempframe,frame2);
+            cv::absdiff(frame,tempframe,frame2);
+            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),20);
+            //cv::medianBlur(frame2,frame2,3);
             cv::cvtColor(frame2, frame2, cv::COLOR_BGR2GRAY);
-            cv::threshold(frame2,frame2,10,255,cv::THRESH_BINARY);
+            cv::threshold(frame2,frame2,50,255,cv::THRESH_BINARY);
             QImage qimg2(frame2.data, frame2.cols, frame2.rows, frame2.step, QImage::Format_Grayscale8);
             rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
 
+            //znajdujemy, łączymy i rysujemy krawędzie
+            cv::findContours(frame2,contours,cv::RETR_TREE,cv::CHAIN_APPROX_SIMPLE);
+            cv::drawContours(frame,contours,-1,cv::Scalar(0,255,0),5);
+            std::vector<std::vector<cv::Point> >hull( contours.size() );
+            for( size_t i = 0; i < contours.size(); i++ )
+            {
+                cv::convexHull( contours[i], hull[i] );
+            }
 
-           cv::findContours(frame2,contours,cv::RETR_LIST,cv::CHAIN_APPROX_SIMPLE);
-           cv::drawContours(frame,contours,-1,cv::Scalar(0,255,0),5);
+                cv::drawContours(frame,hull,-1,cv::Scalar(134,3,255),5);
+
 
             QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );

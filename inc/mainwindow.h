@@ -59,6 +59,9 @@ private:
  *  false - nie udało się wyliczyć średniej ramki tła
  */
 bool ComputeAverageBacgroundFrame(unsigned int NumberOfFrames,cv::Mat & avrFrame);
+
+cv::Mat equalizeIntensity(const cv::Mat& inputImage);
+
 QGraphicsPixmapItem leftPixmap,rightPixmap; /**< TODO: describe */
 cv::VideoCapture video; /**< TODO: describe */
 /**

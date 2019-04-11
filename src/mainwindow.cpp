@@ -117,7 +117,9 @@ void MainWindow::on_OpenFile_clicked()
  */
 void MainWindow::on_PlayButton_clicked()
 {
-    cv::Mat frame,tempframe,frame2;
+    cv::Mat frame,tempframe,frame2,frame3;
+    std::vector<std::vector<cv::Point> > contours;
+
 
     if(!ComputeAverageBacgroundFrame(30,tempframe)){
         qDebug("gówno");
@@ -137,19 +139,21 @@ void MainWindow::on_PlayButton_clicked()
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!frame.empty()){
             /*przetwarzamy i wyswietlamy ramki*/
+
+            cv::subtract(frame,tempframe,frame2);
+            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),5);
+            cv::cvtColor(frame2, frame2, cv::COLOR_BGR2GRAY);
+            cv::threshold(frame2,frame2,10,255,cv::THRESH_BINARY);
+            QImage qimg2(frame2.data, frame2.cols, frame2.rows, frame2.step, QImage::Format_Grayscale8);
+            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
+
+
+           cv::findContours(frame2,contours,cv::RETR_LIST,cv::CHAIN_APPROX_SIMPLE);
+           cv::drawContours(frame,contours,-1,cv::Scalar(0,255,0),5);
+
             QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
 
-            //cv::subtract(tempframe,frame,frame2);
-            //frame2 = frame - tempframe;
-            //cv::subtract(frame,tempframe,frame2);
-//            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),0);
-//            cv::cvtColor(frame2, frame2, cv::COLOR_BGR2GRAY);
-//            cv::threshold(frame2,frame2,30,255,cv::THRESH_BINARY);
-            frame2 = tempframe;
-            //cv::cvtColor(frame2,frame2,cv::COLOR_GRAY2BGR);
-            QImage qimg2(frame2.data, frame2.cols, frame2.rows, frame2.step, /*QImage::Format_Grayscale8*/ QImage::Format_RGB888);
-            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
 
             if(cv::waitKey(30) >= 0) break;
         }
@@ -159,7 +163,9 @@ void MainWindow::on_PlayButton_clicked()
         qApp->processEvents();
     }
 
-
+    frame.release();
+    frame2.release();
+    tempframe.release();
 }
 
 /**

@@ -17,10 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->leftView->scene()->addItem(&leftPixmap);
     ui->rightView->scene()->addItem(&rightPixmap);
 
+    ui->rightView->setVisible(false);
+
     ui->PlayButton->setEnabled(false);
     ui->StopButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
 
     file_name = QString(); //ustawiamy stringa na NULL
+    TresholdValue = 30;
+    ui->TreshholdSlider->setValue(TresholdValue);
+    kernelSize.width = 0;
+    kernelSize.height = 0;
 }
 
 /**
@@ -125,10 +132,11 @@ void MainWindow::on_OpenFile_clicked()
     }
     ui->PlayButton->setEnabled(true);
     ui->StopButton->setEnabled(true);
+    ui->pauseButton->setEnabled(true);
 
     //wyświetlamy pierwszą ramkę i zmienamy rozmiar okna
     video >> frame;
-    QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+    QImage qimg(frame.data, frame.cols, frame.rows,  static_cast<int>(frame.step), QImage::Format_RGB888);
     leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
     ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
 
@@ -142,11 +150,12 @@ void MainWindow::on_OpenFile_clicked()
  */
 void MainWindow::on_PlayButton_clicked()
 {
-    cv::Mat frame,tempframe,frame2,frame3;
-    std::vector<std::vector<cv::Point> > contours;
+    cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
+    cv::Mat kernel;
+    std::vector<std::vector<cv::Point> > finalContours,filledContours;
 
 
-    if(!ComputeAverageBacgroundFrame(30,tempframe)){
+    if(!ComputeAverageBacgroundFrame(30,referenceFrame)){
         qDebug("gówno");
         return;
     }
@@ -156,38 +165,58 @@ void MainWindow::on_PlayButton_clicked()
     }
 
 
-    video>> frame;
+    //video>> frame;
     // tempframe = frame.clone();
     while(video.isOpened()){
-        video >> frame;
+        //sprawdzamy czy jest pauza
+        if(!SetPause){
+            video >> originalFrame;
+        }
         //  frame = equalizeIntensity(frame);
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
-        if(!frame.empty()){
+        if(!originalFrame.empty()){
+
             /*przetwarzamy i wyswietlamy ramki*/
 
-            //cv::subtract(frame,tempframe,frame2);
-            cv::absdiff(frame,tempframe,frame2);
-            cv::GaussianBlur(frame2,frame2, cv::Size(5,5),20);
-            //cv::medianBlur(frame2,frame2,3);
-            cv::cvtColor(frame2, frame2, cv::COLOR_BGR2GRAY);
-            cv::threshold(frame2,frame2,50,255,cv::THRESH_BINARY);
-            QImage qimg2(frame2.data, frame2.cols, frame2.rows, frame2.step, QImage::Format_Grayscale8);
-            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
 
-            //znajdujemy, łączymy i rysujemy krawędzie
-            cv::findContours(frame2,contours,cv::RETR_TREE,cv::CHAIN_APPROX_SIMPLE);
-            cv::drawContours(frame,contours,-1,cv::Scalar(0,255,0),5);
-            std::vector<std::vector<cv::Point> >hull( contours.size() );
-            for( size_t i = 0; i < contours.size(); i++ )
-            {
-                cv::convexHull( contours[i], hull[i] );
+            cv::absdiff(originalFrame,referenceFrame,binaryFrame);
+            //  cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
+            cv::cvtColor(binaryFrame, binaryFrame, cv::COLOR_BGR2GRAY);
+            cv::threshold(binaryFrame,binaryFrame,TresholdValue,255,cv::THRESH_BINARY);
+            if(kernelSize.width > 0){
+                kernel.release();
+                kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
+                cv::erode(binaryFrame,binaryFrame,kernel);//erozja
+                cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel); // zamkniecie (dylatacja -> erozja)
             }
 
-                cv::drawContours(frame,hull,-1,cv::Scalar(134,3,255),5);
+            //znajdujemy, łączymy i rysujemy krawędzie
+
+            if(FillHoles){
+                cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+                for(size_t i = 0 ; i < filledContours.size() ; i++){
+                    cv::drawContours(binaryFrame,filledContours,int(i),cv::Scalar(255,255,255),cv::FILLED);
+                }
+            }
+            cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+
+            QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows,  static_cast<int>(binaryFrame.step), QImage::Format_Grayscale8);
+            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
 
 
-            QImage qimg(frame.data, frame.cols, frame.rows, frame.step, QImage::Format_RGB888);
+            finalFrame = originalFrame.clone();
+            cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),5);
+            std::vector<std::vector<cv::Point> >hull( finalContours.size() );
+            for( size_t i = 0; i < finalContours.size(); i++ )
+            {
+                cv::convexHull( finalContours[i], hull[i] );
+            }
+
+            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),5);
+
+
+            QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
 
 
@@ -196,12 +225,15 @@ void MainWindow::on_PlayButton_clicked()
         else{
             video.release();
         }
+
         qApp->processEvents();
     }
 
-    frame.release();
-    frame2.release();
-    tempframe.release();
+    originalFrame.release();
+    binaryFrame.release();
+    finalFrame.release();
+    referenceFrame.release();
+    kernel.release();
 }
 
 /**
@@ -213,3 +245,38 @@ void MainWindow::on_StopButton_clicked()
     video.release();
 }
 
+
+void MainWindow::on_BinaryView_clicked(bool checked)
+{
+    if(checked){
+        ui->rightView->setVisible(true);
+    }
+    else{
+        ui->rightView->setVisible(false);
+    }
+}
+
+void MainWindow::on_TreshholdSlider_sliderMoved(int position)
+{
+    TresholdValue = position;
+}
+
+void MainWindow::on_pauseButton_clicked()
+{
+    if(SetPause){
+        SetPause = false;
+    }
+    else{
+        SetPause = true;
+    }
+}
+
+void MainWindow::on_kernelSlider_sliderMoved(int position)
+{
+    kernelSize = cv::Size(position,position);
+}
+
+void MainWindow::on_fillHoles_clicked(bool checked)
+{
+    FillHoles = checked;
+}

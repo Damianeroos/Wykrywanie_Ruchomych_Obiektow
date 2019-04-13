@@ -64,6 +64,10 @@ cv::Mat equalizeIntensity(const cv::Mat& inputImage);
 
 QGraphicsPixmapItem leftPixmap,rightPixmap; /**< TODO: describe */
 cv::VideoCapture video; /**< TODO: describe */
+int TresholdValue = 0;
+bool SetPause = false;
+bool FillHoles = false;
+cv::Size kernelSize;
 /**
  * @brief file_name
  */
@@ -83,6 +87,21 @@ private slots:
      *
      */
     void on_StopButton_clicked();
+
+    void on_BinaryView_clicked(bool checked);
+
+    /**
+     * @brief
+     *
+     * @param position
+     */
+    void on_TreshholdSlider_sliderMoved(int position);
+
+    void on_pauseButton_clicked();
+
+    void on_kernelSlider_sliderMoved(int position);
+
+    void on_fillHoles_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui; /**< TODO: describe */

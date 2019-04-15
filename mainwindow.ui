@@ -43,6 +43,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="paramButton">
+          <property name="text">
+           <string>Parameters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="OpenFile">
           <property name="text">
            <string>Otwórz</string>
@@ -93,75 +100,6 @@
            <string>Show Binary</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="fillHoles">
-          <property name="text">
-           <string>Fill Holes</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Progowanie</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="TreshholdSlider">
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="maximum">
-           <number>255</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Kern. Size</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSlider" name="kernelSlider">
-          <property name="maximumSize">
-           <size>
-            <width>200</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>15</number>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

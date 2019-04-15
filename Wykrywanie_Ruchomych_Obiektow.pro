@@ -13,7 +13,7 @@ TEMPLATE = app
 
 INCLUDEPATH += /usr/local/include/opencv4
 LIBS += -L/usr/local/lib
-LIBS += -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_videoio
+LIBS += -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_videoio -lopencv_video
 
 QMAKE_CXXFLAGS += -g -Wall
 
@@ -32,14 +32,18 @@ CONFIG += c++11
 
 SOURCES += \
         src/main.cpp \
-        src/mainwindow.cpp
+        src/mainwindow.cpp \
+        src/paramwindow.cpp
+
 
 HEADERS += \
-        inc/mainwindow.h
+        inc/mainwindow.h \
+        inc/paramwindow.h
+
 
 FORMS += \
         mainwindow.ui \
-    parameterswindow.ui
+    paramwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

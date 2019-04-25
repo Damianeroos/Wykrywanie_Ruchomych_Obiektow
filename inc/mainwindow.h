@@ -119,6 +119,8 @@ private slots:
 
     void on_PlayButton_clicked();
 
+    void on_CameraButton_clicked();
+
 private:
     Ui::MainWindow *ui; /**< TODO: describe */
 

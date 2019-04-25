@@ -13,6 +13,7 @@
 #include <QPixmap>
 #include <QCloseEvent>
 #include <QMessageBox>
+#include <QStyle>
 
 #include <opencv4/opencv2/opencv.hpp>
 #include <opencv4/opencv2/imgproc.hpp>
@@ -105,7 +106,6 @@ private slots:
 
 
 
-    void on_pauseButton_clicked();
 
 
     void on_paramButton_clicked();

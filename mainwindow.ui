@@ -14,104 +14,110 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QGraphicsView" name="leftView">
-    <property name="geometry">
-     <rect>
-      <x>11</x>
-      <y>11</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGraphicsView" name="rightView">
-    <property name="geometry">
-     <rect>
-      <x>273</x>
-      <y>11</y>
-      <width>256</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QCheckBox" name="BinaryView">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>430</y>
-      <width>110</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show Binary</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="paramButton">
-    <property name="geometry">
-     <rect>
-      <x>57</x>
-      <y>211</y>
-      <width>87</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Parameters</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="OpenFile">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>211</y>
-      <width>80</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Otwórz</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="PlayButton">
-    <property name="geometry">
-     <rect>
-      <x>235</x>
-      <y>211</y>
-      <width>81</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>START</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pauseButton">
-    <property name="geometry">
-     <rect>
-      <x>322</x>
-      <y>211</y>
-      <width>80</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PAUSE</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="StopButton">
-    <property name="geometry">
-     <rect>
-      <x>408</x>
-      <y>211</y>
-      <width>80</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>STOP</string>
-    </property>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QGraphicsView" name="leftView"/>
+        </item>
+        <item>
+         <widget class="QGraphicsView" name="rightView"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="paramButton">
+          <property name="text">
+           <string>Parameters</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="OpenFile">
+          <property name="text">
+           <string>Otwórz</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="PlayButton">
+          <property name="text">
+           <string>START</string>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>50</width>
+            <height>50</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="StopButton">
+          <property name="text">
+           <string>STOP</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QCheckBox" name="BinaryView">
+          <property name="text">
+           <string>Show Binary</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

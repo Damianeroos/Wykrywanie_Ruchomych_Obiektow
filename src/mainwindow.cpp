@@ -23,13 +23,26 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->PlayButton->setEnabled(false);
     ui->StopButton->setEnabled(false);
-    ui->pauseButton->setEnabled(false);
+
 
     file_name = QString(); //ustawiamy stringa na NULL
     TresholdValue = 30;
     kernelSize.width = 0;
     kernelSize.height = 0;
 
+
+    ui->PlayButton->setText("");
+    ui->StopButton->setText("");
+    ui->OpenFile->setText("");
+    ui->paramButton->setText("");
+    ui->PlayButton->setIconSize(QSize(50,50));
+    ui->StopButton->setIconSize(QSize(50,50));
+    ui->OpenFile->setIconSize(QSize(50,50));
+    ui->paramButton->setIconSize(QSize(50,50));
+    ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
+    ui->StopButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaStop));
+    ui->OpenFile->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_DirOpenIcon));
+    ui->paramButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ComputerIcon));
 
     connect(&parWin,&ParamWindow::KernelSizeChanged,this,&MainWindow::on_paramWindow_KernelSize_set);
     connect(&parWin,&ParamWindow::TresholdChanged,this,&MainWindow::on_paramWindow_Treshold_set);
@@ -139,6 +152,17 @@ int MainWindow::PlayVideo()
         return 0;
     }
 
+    //wyliczamy średni obrz tla za pomoca nowego algorytmu
+    video.open(file_name.toStdString());
+    while(video.isOpened()){
+        video >> originalFrame;
+        pMOG2->apply(originalFrame,fgMaskMOG2);
+        if(originalFrame.empty()){
+            break;
+        }
+    }
+    video.release();
+
     if(!video.isOpened()){
         video.open(file_name.toStdString());
     }
@@ -154,7 +178,7 @@ int MainWindow::PlayVideo()
         }
 
 
-        //binaryFrame.clone()=fgMaskMOG2;
+
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!originalFrame.empty()){
@@ -164,9 +188,9 @@ int MainWindow::PlayVideo()
 
            //cv::absdiff(originalFrame,referenceFrame,binaryFrame);
             binaryFrame = fgMaskMOG2.clone();
-            //if(setGaussianFilter){
-          //      cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
-          //  }
+            if(setGaussianFilter){
+                cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
+            }
             //cv::cvtColor(binaryFrame, binaryFrame, cv::COLOR_BGR2GRAY);
             //cv::threshold(binaryFrame,binaryFrame,TresholdValue,255,cv::THRESH_BINARY);
             if(kernelSize.width > 0){
@@ -240,7 +264,7 @@ void MainWindow::on_OpenFile_clicked()
     }
     ui->PlayButton->setEnabled(true);
     ui->StopButton->setEnabled(true);
-    ui->pauseButton->setEnabled(true);
+
 
     //wyświetlamy pierwszą ramkę i zmienamy rozmiar okna
     video >> frame;
@@ -252,9 +276,9 @@ void MainWindow::on_OpenFile_clicked()
     video.release();
     SetPause = true;
     PlayVideo();
-    ui->PlayButton->setEnabled(false);
+    ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
     ui->StopButton->setEnabled(false);
-    ui->pauseButton->setEnabled(false);
+    ui->PlayButton->setEnabled(false);
 }
 
 
@@ -281,15 +305,7 @@ void MainWindow::on_BinaryView_clicked(bool checked)
 
 
 
-void MainWindow::on_pauseButton_clicked()
-{
-    if(SetPause){
-        SetPause = false;
-    }
-    else{
-        SetPause = true;
-    }
-}
+
 
 
 void MainWindow::on_paramButton_clicked()
@@ -323,8 +339,11 @@ void MainWindow::on_PlayButton_clicked()
 {
     if(SetPause){
         SetPause = false;
+          ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPause));
     }
     else {
         SetPause = true;
+          ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
+
     }
 }

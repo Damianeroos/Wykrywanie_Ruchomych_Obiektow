@@ -84,7 +84,7 @@ ParamWindow parWin;
  */
 QString file_name;
 int PlayVideo(void);
-bool MovieIsPlaying = false;
+
 
 private slots:
     /**

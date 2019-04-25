@@ -163,12 +163,14 @@ int MainWindow::PlayVideo()
 
 
     video>> originalFrame;
+
     // tempframe = frame.clone();
     while(video.isOpened()){
         //sprawdzamy czy jest pauza
         if(!SetPause){
             video >> originalFrame;
             pMOG2->apply(originalFrame,fgMaskMOG2);
+
         }
 
 
@@ -182,12 +184,12 @@ int MainWindow::PlayVideo()
 
            //cv::absdiff(originalFrame,referenceFrame,binaryFrame);
             binaryFrame = fgMaskMOG2.clone();
-            if(setGaussianFilter){
+            if(setGaussianFilter && !binaryFrame.empty()){
                 cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
             }
            // cv::cvtColor(binaryFrame, binaryFrame, cv::COLOR_BGR2GRAY);
             //cv::threshold(binaryFrame,binaryFrame,TresholdValue,255,cv::THRESH_BINARY);
-            if(kernelSize.width > 0){
+            if(kernelSize.width > 0 && !binaryFrame.empty()){
                 kernel.release();
                 kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
                 cv::erode(binaryFrame,binaryFrame,kernel);//erozja
@@ -196,7 +198,7 @@ int MainWindow::PlayVideo()
 
             //znajdujemy, łączymy i rysujemy krawędzie
 
-            if(FillHoles){
+            if(FillHoles && !binaryFrame.empty()){
                 cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
                 for(size_t i = 0 ; i < filledContours.size() ; i++){
                     cv::drawContours(binaryFrame,filledContours,int(i),cv::Scalar(255,255,255),cv::FILLED);
@@ -209,15 +211,19 @@ int MainWindow::PlayVideo()
 
 
             finalFrame = originalFrame.clone();
-            cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),5);
+            cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),1);
             std::vector<std::vector<cv::Point> >hull( finalContours.size() );
             for( size_t i = 0; i < finalContours.size(); i++ )
             {
                 cv::convexHull( finalContours[i], hull[i] );
             }
 
-            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),5);
-
+            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
+            cv::Size temp = finalFrame.size();
+            int y = temp.height;
+            int x = temp.width;
+             cv::rectangle(finalFrame,cv::Point(y/3,x/5),cv::Point(y,x/5 + 10),cv::Scalar(255,0,0));
+            cv::putText(finalFrame,"Licznik: 0",cv::Point(y/3,x/5),cv::FONT_HERSHEY_SIMPLEX,0.5,cv::Scalar(255,0,0),2);
 
             QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
@@ -250,6 +256,8 @@ void MainWindow::on_OpenFile_clicked()
 {
     cv::Mat frame;
 
+
+
     file_name = QFileDialog::getOpenFileName(this,"Otwórz plik video","/home/damian/Wideo");
 
     if(!video.open(file_name.toStdString())){
@@ -270,6 +278,7 @@ void MainWindow::on_OpenFile_clicked()
     video.release();
     SetPause = true;
     PlayVideo();
+
     ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
     ui->StopButton->setEnabled(false);
     ui->PlayButton->setEnabled(false);
@@ -347,6 +356,7 @@ void MainWindow::on_CameraButton_clicked()
     if(video.isOpened()){
         video.release();
     }
+    ui->StopButton->setEnabled(true);
 
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
     cv::Mat kernel;
@@ -410,14 +420,14 @@ void MainWindow::on_CameraButton_clicked()
 
 
             finalFrame = originalFrame.clone();
-            cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),5);
+            cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),1);
             std::vector<std::vector<cv::Point> >hull( finalContours.size() );
             for( size_t i = 0; i < finalContours.size(); i++ )
             {
                 cv::convexHull( finalContours[i], hull[i] );
             }
 
-            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),5);
+            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
 
 
             QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);

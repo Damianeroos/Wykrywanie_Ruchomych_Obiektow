@@ -125,39 +125,7 @@ cv::Mat MainWindow::equalizeIntensity(const cv::Mat &inputImage)
     return cv::Mat();
 }
 
-/**
- * @brief
- *
- */
-void MainWindow::on_OpenFile_clicked()
-{
-    cv::Mat frame;
-
-    file_name = QFileDialog::getOpenFileName(this,"Otwórz plik video","/home/damian/Wideo");
-
-    if(!video.open(file_name.toStdString())){
-        QMessageBox::critical(this,"Nie wczytno pliku video!","Upewnij się czy wybrany plik jest plikiem video.");
-        return;
-    }
-    ui->PlayButton->setEnabled(true);
-    ui->StopButton->setEnabled(true);
-    ui->pauseButton->setEnabled(true);
-
-    //wyświetlamy pierwszą ramkę i zmienamy rozmiar okna
-    video >> frame;
-    QImage qimg(frame.data, frame.cols, frame.rows,  static_cast<int>(frame.step), QImage::Format_RGB888);
-    leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
-    ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
-
-    frame.release();
-    video.release();
-}
-
-/**
- * @brief
- *
- */
-void MainWindow::on_PlayButton_clicked()
+int MainWindow::PlayVideo()
 {
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
     cv::Mat kernel;
@@ -168,7 +136,7 @@ void MainWindow::on_PlayButton_clicked()
 
     if(!ComputeAverageBacgroundFrame(30,referenceFrame)){
         qDebug("nie można obliczyć obrazu referencyjnego");
-        return;
+        return 0;
     }
 
     if(!video.isOpened()){
@@ -176,15 +144,16 @@ void MainWindow::on_PlayButton_clicked()
     }
 
 
-    //video>> frame;
+    video>> originalFrame;
     // tempframe = frame.clone();
     while(video.isOpened()){
         //sprawdzamy czy jest pauza
         if(!SetPause){
             video >> originalFrame;
+            pMOG2->apply(originalFrame,fgMaskMOG2);
         }
 
-        pMOG2->apply(originalFrame,fgMaskMOG2);
+
         //binaryFrame.clone()=fgMaskMOG2;
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
@@ -250,7 +219,45 @@ void MainWindow::on_PlayButton_clicked()
     finalFrame.release();
     referenceFrame.release();
     kernel.release();
+    return 1;
 }
+
+
+
+/**
+ * @brief
+ *
+ */
+void MainWindow::on_OpenFile_clicked()
+{
+    cv::Mat frame;
+
+    file_name = QFileDialog::getOpenFileName(this,"Otwórz plik video","/home/damian/Wideo");
+
+    if(!video.open(file_name.toStdString())){
+        QMessageBox::critical(this,"Nie wczytno pliku video!","Upewnij się czy wybrany plik jest plikiem video.");
+        return;
+    }
+    ui->PlayButton->setEnabled(true);
+    ui->StopButton->setEnabled(true);
+    ui->pauseButton->setEnabled(true);
+
+    //wyświetlamy pierwszą ramkę i zmienamy rozmiar okna
+    video >> frame;
+    QImage qimg(frame.data, frame.cols, frame.rows,  static_cast<int>(frame.step), QImage::Format_RGB888);
+    leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
+    ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
+
+    frame.release();
+    video.release();
+    SetPause = true;
+    PlayVideo();
+    ui->PlayButton->setEnabled(false);
+    ui->StopButton->setEnabled(false);
+    ui->pauseButton->setEnabled(false);
+}
+
+
 
 /**
  * @brief
@@ -310,3 +317,14 @@ void MainWindow::on_paramWindow_FillHoles_set(bool option)
     FillHoles = option;
 }
 
+
+
+void MainWindow::on_PlayButton_clicked()
+{
+    if(SetPause){
+        SetPause = false;
+    }
+    else {
+        SetPause = true;
+    }
+}

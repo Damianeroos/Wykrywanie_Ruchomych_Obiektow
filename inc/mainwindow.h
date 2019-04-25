@@ -82,6 +82,8 @@ ParamWindow parWin;
  * @brief file_name
  */
 QString file_name;
+int PlayVideo(void);
+bool MovieIsPlaying = false;
 
 private slots:
     /**
@@ -90,7 +92,7 @@ private slots:
      */
     void on_OpenFile_clicked();
 
-    void on_PlayButton_clicked();
+
 
     /**
      * @brief
@@ -112,6 +114,10 @@ private slots:
     void on_paramWindow_Treshold_set(int position);
     void on_paramWindow_GaussFilter_set(bool option);
     void on_paramWindow_FillHoles_set(bool option);
+
+
+
+    void on_PlayButton_clicked();
 
 private:
     Ui::MainWindow *ui; /**< TODO: describe */

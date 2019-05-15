@@ -33,20 +33,17 @@ CONFIG += c++11
 SOURCES += \
         src/main.cpp \
         src/mainwindow.cpp \
-        src/paramwindow.cpp \
-    virtualgate.cpp
+        src/paramwindow.cpp
 
 
 HEADERS += \
         inc/mainwindow.h \
-        inc/paramwindow.h \
-    virtualgate.h
+        inc/paramwindow.h
 
 
 FORMS += \
         mainwindow.ui \
-    paramwindow.ui \
-    virtualgate.ui
+    paramwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

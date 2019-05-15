@@ -36,6 +36,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->OpenFile->setText("");
     ui->paramButton->setText("");
     ui->CameraButton->setText("");
+    ui->upButton->setText("");
+    ui->downButton->setText("");
+    ui->leftButton->setText("");
+    ui->rightButton->setText("");
+    ui->rotateButton->setText("");
+    ui->thinButton->setText("");
     ui->PlayButton->setIconSize(QSize(50,50));
     ui->StopButton->setIconSize(QSize(50,50));
     ui->OpenFile->setIconSize(QSize(50,50));
@@ -46,11 +52,22 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->OpenFile->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_DirOpenIcon));
     ui->paramButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_FileDialogDetailedView));
     ui->CameraButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ComputerIcon));
+    ui->upButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ArrowUp));
+    ui->downButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ArrowDown));
+    ui->leftButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ArrowLeft));
+    ui->rightButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ArrowRight));
+    ui->rotateButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_BrowserReload));
+    ui->thinButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarMinButton));
 
     connect(&parWin,&ParamWindow::KernelSizeChanged,this,&MainWindow::on_paramWindow_KernelSize_set);
     connect(&parWin,&ParamWindow::TresholdChanged,this,&MainWindow::on_paramWindow_Treshold_set);
     connect(&parWin,&ParamWindow::GaussianFilterSet,this,&MainWindow::on_paramWindow_GaussFilter_set);
     connect(&parWin,&ParamWindow::FillHolesSet,this,&MainWindow::on_paramWindow_FillHoles_set);
+
+
+    x_gate = 0;
+    y_gate = 0;
+    length_gate = 0;
 }
 
 /**
@@ -219,11 +236,13 @@ int MainWindow::PlayVideo()
             }
 
             cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
-            cv::Size temp = finalFrame.size();
-            int y = temp.height;
-            int x = temp.width;
-             cv::rectangle(finalFrame,cv::Point(y/3,x/5),cv::Point(y,x/5 + 10),cv::Scalar(255,0,0));
-            cv::putText(finalFrame,"Licznik: 0",cv::Point(y/3,x/5),cv::FONT_HERSHEY_SIMPLEX,0.5,cv::Scalar(255,0,0),2);
+
+
+//            cv::Size temp = finalFrame.size();
+//            int y = temp.height;
+//            int x = temp.width;
+//             cv::rectangle(finalFrame,cv::Point(y/3,x/5),cv::Point(y,x/5 + 10),cv::Scalar(255,0,0));
+//            cv::putText(finalFrame,"Licznik: 0",cv::Point(y/3,x/5),cv::FONT_HERSHEY_SIMPLEX,0.5,cv::Scalar(255,0,0),2);
 
             QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
@@ -244,6 +263,13 @@ int MainWindow::PlayVideo()
     referenceFrame.release();
     kernel.release();
     return 1;
+}
+
+void MainWindow::drawGate(cv::Mat &image)
+{
+    cv::Size imageSize = image.size();
+
+    qDebug() <<QString::number(imageSize.width)<<" "<<QString::number(imageSize.height);
 }
 
 

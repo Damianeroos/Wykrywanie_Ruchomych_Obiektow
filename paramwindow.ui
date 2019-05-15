@@ -21,7 +21,7 @@
        <item>
         <widget class="QCheckBox" name="setFillHoles">
          <property name="text">
-          <string>Wypełnij dzióry</string>
+          <string>Wypełnij dziury</string>
          </property>
         </widget>
        </item>

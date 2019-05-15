@@ -14,6 +14,7 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QStyle>
+#include <QKeyEvent>
 
 #include <opencv4/opencv2/opencv.hpp>
 #include <opencv4/opencv2/imgproc.hpp>
@@ -24,7 +25,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 
-
+#define STEP 0.1 //krok o jaki zmieniamy połozenie bramki
 
 #include <vector>
 
@@ -66,6 +67,11 @@ public:
     * @param event
     */
 void closeEvent(QCloseEvent *event);
+/**
+ * @brief keyPressEvent reagujemy na klawisze
+ * @param event
+ */
+void keyPressEvent(QKeyEvent * event);
 
 private:
 /**
@@ -141,6 +147,17 @@ double y_gate;
  * @brief length_gate Długość bramki w zakresie od 0.0 do 1.0
  */
 double length_gate;
+/**
+ * @brief rotation Jezeli false to pionowo. Jezeleni true to poziomo
+ */
+bool rotation;
+/**
+ * @brief drawGate funkcja syruje bramkę na obrazie
+ */
+void drawGate(cv::Mat &image);
+
+
+
 
 
 private slots:
@@ -214,9 +231,23 @@ private slots:
      */
     void on_CameraButton_clicked();
 
+    void on_upButton_clicked();
+
+    void on_downButton_clicked();
+
+    void on_leftButton_clicked();
+
+    void on_rightButton_clicked();
+
+    void on_thinButton_clicked();
+
+    void on_rotateButton_clicked();
+
 private:
     Ui::MainWindow *ui; /**< TODO: describe */
 
 };
+
+
 
 #endif // MAINWINDOW_H

@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     x_gate = 0;
     y_gate = 0;
     length_gate = 0;
+    rotation = false;
 }
 
 /**
@@ -94,6 +95,36 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
     else{
         event->accept();
+    }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event){
+
+    switch (event->key()) {
+    case Qt::Key_R:{
+        on_rotateButton_clicked();
+        break;
+    }
+    case Qt::Key_T:{
+        on_thinButton_clicked();
+        break;
+    }
+    case Qt::Key_W:{
+        on_upButton_clicked();
+        break;
+    }
+    case Qt::Key_S:{
+        on_downButton_clicked();
+        break;
+    }
+    case Qt::Key_A:{
+        on_leftButton_clicked();
+        break;
+    }
+    case Qt::Key_D:{
+        on_rightButton_clicked();
+        break;
+    }
     }
 }
 
@@ -237,7 +268,7 @@ int MainWindow::PlayVideo()
 
             cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
 
-
+            drawGate(finalFrame);
 //            cv::Size temp = finalFrame.size();
 //            int y = temp.height;
 //            int x = temp.width;
@@ -267,9 +298,31 @@ int MainWindow::PlayVideo()
 
 void MainWindow::drawGate(cv::Mat &image)
 {
-    cv::Size imageSize = image.size();
 
-    qDebug() <<QString::number(imageSize.width)<<" "<<QString::number(imageSize.height);
+
+    if(length_gate>0){
+        cv::Size imageSize = image.size();
+        int x0, y0,x1,y1;
+
+        x0 = int(imageSize.width*x_gate); //lewy górny róg bramki
+        y0 = int(imageSize.height*y_gate);
+
+
+        //obliczamy prawy dolny róg bramki
+        if(!rotation){ //bramka pozioma, wiec y1 to grubość
+            y1 = int(y0+0.05*imageSize.width);
+            x1 = int(x0+imageSize.width*length_gate);
+
+            cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+          //  qDebug()<<QString::number(x0)+" "<<QString::number(y0);
+        }
+        else{ //bramka pionowa, wiec x1 to grubość
+            x1 = int(x0+0.05*imageSize.width);
+            y1 = int(y0+imageSize.height*length_gate);
+
+            cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+        }
+    }
 }
 
 
@@ -475,4 +528,54 @@ void MainWindow::on_CameraButton_clicked()
     referenceFrame.release();
     kernel.release();
     return;
+}
+
+void MainWindow::on_upButton_clicked()
+{
+    y_gate -= STEP;
+    if(y_gate <= 0 ){
+        y_gate = 0;
+    }
+}
+
+void MainWindow::on_downButton_clicked()
+{
+    y_gate += STEP;
+    if(y_gate >= 1){
+        y_gate = 1;
+    }
+}
+
+void MainWindow::on_leftButton_clicked()
+{
+    x_gate -= STEP;
+    if(x_gate < 0){
+        x_gate = 0;
+    }
+}
+
+void MainWindow::on_rightButton_clicked()
+{
+    x_gate += STEP;
+    if(x_gate > 1){
+        x_gate = 1;
+    }
+}
+
+void MainWindow::on_thinButton_clicked()
+{
+    length_gate += STEP;
+    if(length_gate > 1){
+        length_gate = 0;
+    }
+}
+
+void MainWindow::on_rotateButton_clicked()
+{
+    if(rotation){
+        rotation = false;
+    }
+    else{
+        rotation = true;
+    }
 }

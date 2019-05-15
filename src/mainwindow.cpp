@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     file_name = QString(); //ustawiamy stringa na NULL
     TresholdValue = 30;
-    kernelSize.width = 0;
-    kernelSize.height = 0;
+    kernelSize.width = 7;
+    kernelSize.height = 7;
 
 
     ui->PlayButton->setText("");
@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rightButton->setText("");
     ui->rotateButton->setText("");
     ui->thinButton->setText("");
+    ui->clearCounterButton->setText("");
     ui->PlayButton->setIconSize(QSize(50,50));
     ui->StopButton->setIconSize(QSize(50,50));
     ui->OpenFile->setIconSize(QSize(50,50));
@@ -58,6 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rightButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_ArrowRight));
     ui->rotateButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_BrowserReload));
     ui->thinButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarMinButton));
+    ui->clearCounterButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_DialogResetButton));
 
     connect(&parWin,&ParamWindow::KernelSizeChanged,this,&MainWindow::on_paramWindow_KernelSize_set);
     connect(&parWin,&ParamWindow::TresholdChanged,this,&MainWindow::on_paramWindow_Treshold_set);
@@ -69,6 +71,8 @@ MainWindow::MainWindow(QWidget *parent) :
     y_gate = 0;
     length_gate = 0;
     rotation = false;
+    GateCounter = 0;
+    gateIsEmpty = true;
 }
 
 /**
@@ -230,13 +234,12 @@ int MainWindow::PlayVideo()
             /*przetwarzamy i wyswietlamy ramki*/
 
 
-           //cv::absdiff(originalFrame,referenceFrame,binaryFrame);
+
             binaryFrame = fgMaskMOG2.clone();
             if(setGaussianFilter && !binaryFrame.empty()){
                 cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
             }
-           // cv::cvtColor(binaryFrame, binaryFrame, cv::COLOR_BGR2GRAY);
-            //cv::threshold(binaryFrame,binaryFrame,TresholdValue,255,cv::THRESH_BINARY);
+
             if(kernelSize.width > 0 && !binaryFrame.empty()){
                 kernel.release();
                 kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
@@ -261,19 +264,21 @@ int MainWindow::PlayVideo()
             finalFrame = originalFrame.clone();
             cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),1);
             std::vector<std::vector<cv::Point> >hull( finalContours.size() );
+            std::vector<cv::Point2f>centers( finalContours.size() );
+            std::vector<float>radius( finalContours.size() );
+
             for( size_t i = 0; i < finalContours.size(); i++ )
-            {
-                cv::convexHull( finalContours[i], hull[i] );
+                {
+                    approxPolyDP( finalContours[i], hull[i], 3, true );
+                    minEnclosingCircle( hull[i], centers[i], radius[i] );
+                }
+            for( size_t i = 0; i< finalContours.size(); i++ )
+             {
+                 circle( finalFrame, centers[i], (int)(radius[i]*1.1), cv::Scalar(134,3,255), 2 );
+
             }
 
-            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
-
-            drawGate(finalFrame);
-//            cv::Size temp = finalFrame.size();
-//            int y = temp.height;
-//            int x = temp.width;
-//             cv::rectangle(finalFrame,cv::Point(y/3,x/5),cv::Point(y,x/5 + 10),cv::Scalar(255,0,0));
-//            cv::putText(finalFrame,"Licznik: 0",cv::Point(y/3,x/5),cv::FONT_HERSHEY_SIMPLEX,0.5,cv::Scalar(255,0,0),2);
+            drawGate(finalFrame,centers);
 
             QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
@@ -296,12 +301,12 @@ int MainWindow::PlayVideo()
     return 1;
 }
 
-void MainWindow::drawGate(cv::Mat &image)
+void MainWindow::drawGate(cv::Mat &image, std::vector<cv::Point2f> &centers)
 {
-
 
     if(length_gate>0){
         cv::Size imageSize = image.size();
+
         int x0, y0,x1,y1;
 
         x0 = int(imageSize.width*x_gate); //lewy górny róg bramki
@@ -313,15 +318,56 @@ void MainWindow::drawGate(cv::Mat &image)
             y1 = int(y0+0.05*imageSize.width);
             x1 = int(x0+imageSize.width*length_gate);
 
-            cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
-          //  qDebug()<<QString::number(x0)+" "<<QString::number(y0);
+
+            CheckGateAndCounter( x0,  y0,  x1,  y1,  centers);
+
+            if(gateIsEmpty){
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+            }
+            else{
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(0,255,0),3);
+            }
+
         }
         else{ //bramka pionowa, wiec x1 to grubość
             x1 = int(x0+0.05*imageSize.width);
             y1 = int(y0+imageSize.height*length_gate);
+            CheckGateAndCounter( x0,  y0,  x1,  y1,  centers);
 
-            cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+            if(gateIsEmpty){
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+            }
+            else{
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(0,255,0),3);
+            }
+
+
         }
+    }
+}
+
+void MainWindow::CheckGateAndCounter(const int x0, const int y0, const int x1, const int y1, const std::vector<cv::Point2f> &centers)
+{
+    bool ObjectInGate = false;
+    int xp,yp;
+    for( size_t i = 0; i< centers.size(); i++ )
+     {
+        xp = int(centers[i].x);
+        yp = int(centers[i].y);
+
+        if(x0 < xp && xp < x1 && y0 < yp && yp < y1) {
+            ObjectInGate = true;
+        }
+    }
+
+    if(ObjectInGate && gateIsEmpty){ //nowy obiekt w pustej ramce
+        gateIsEmpty = false;
+    }
+
+    if(!ObjectInGate  && !gateIsEmpty){//nalezy zwiekszyć licznik
+        GateCounter += 1;
+        ui->lcdCounter->display(int(GateCounter));
+        gateIsEmpty = true;
     }
 }
 
@@ -578,4 +624,10 @@ void MainWindow::on_rotateButton_clicked()
     else{
         rotation = true;
     }
+}
+
+void MainWindow::on_clearCounterButton_clicked()
+{
+    GateCounter = 0;
+    ui->lcdCounter->display(0);
 }

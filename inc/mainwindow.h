@@ -154,10 +154,24 @@ bool rotation;
 /**
  * @brief drawGate funkcja syruje bramkę na obrazie
  */
-void drawGate(cv::Mat &image);
-
-
-
+void drawGate(cv::Mat &image, std::vector<cv::Point2f> &centers);
+/**
+ * @brief gateIsEmpty jeżeli jakiś obiekt jest w bramce to false, intaczej true
+ */
+bool gateIsEmpty;
+/**
+ * @brief CheckGateAndCounter sprawdza czy jakiś obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i uaktualnia licznik
+ * @param x0 lewy górny róg bramki
+ * @param y0 lewy górny róg bramki
+ * @param x1 prawy dolny róg bramki
+ * @param y1 prawy dolny róg bramki
+ * @param centers środki okręgów opisanych na wykrytych obiketach
+ */
+void CheckGateAndCounter(const int x0, const int y0,const int x1, const int y1, const std::vector<cv::Point2f> &centers);
+/**
+ * @brief GateCounter licznik obiektów, które zostały wykryte w bramce
+ */
+unsigned int GateCounter;
 
 
 private slots:
@@ -242,6 +256,8 @@ private slots:
     void on_thinButton_clicked();
 
     void on_rotateButton_clicked();
+
+    void on_clearCounterButton_clicked();
 
 private:
     Ui::MainWindow *ui; /**< TODO: describe */

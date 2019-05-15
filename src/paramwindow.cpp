@@ -8,8 +8,8 @@ ParamWindow::ParamWindow(QWidget *parent) :
     ui->setupUi(this);
 
     TresholdValue = 30;
-    kernelSize.width = 0;
-    kernelSize.height = 0;
+    kernelSize.width = 7;
+    kernelSize.height = 7;
 
     ui->TreshildSlider->setValue(TresholdValue);
     ui->showTreshVal->setNum(TresholdValue);

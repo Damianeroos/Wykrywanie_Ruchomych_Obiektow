@@ -1,0 +1,4 @@
+<map id="MainWindow::drawGate" name="MainWindow::drawGate">
+<area shape="rect" id="node2" href="$class_main_window.html#af30186cc445125b50835b073091c5fa0" title="Odtawrza film, przetwarza go i wyświetla. " alt="" coords="215,13,377,39"/>
+<area shape="rect" id="node3" href="$class_main_window.html#a836f789d3efd6d8b8fc669a11c24a255" title="Otwiera eksplorer wczytytywania plików, zapisuje wybrany plik i sprawdza poprawność formatu..." alt="" coords="425,5,604,47"/>
+</map>

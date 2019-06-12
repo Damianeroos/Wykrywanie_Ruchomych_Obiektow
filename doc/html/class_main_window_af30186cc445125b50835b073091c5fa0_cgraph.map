@@ -1,0 +1,5 @@
+<map id="MainWindow::playVideo" name="MainWindow::playVideo">
+<area shape="rect" id="node2" href="$class_main_window.html#a2b2489e2441e51fef78f01d02810089e" title="Funkcja wylicza średni obraz tła z pliku video. " alt="" coords="216,5,419,47"/>
+<area shape="rect" id="node3" href="$class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907" title="drawGate funkcja rysuje bramkę na obrazie " alt="" coords="237,71,398,98"/>
+<area shape="rect" id="node4" href="$class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a" title="CheckGateAndCounter sprawdza czy obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i ua..." alt="" coords="467,64,657,105"/>
+</map>

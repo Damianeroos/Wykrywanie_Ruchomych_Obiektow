@@ -1,10 +1,11 @@
-//testy funkcjonalne
-//coding convetions
-
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
+/*!
+  * \file
+  * \brief Definicja klasy MainWindow
+  *
+  * Plik zawiera definicję klasy MainWindow.
+  */
 #include <QMainWindow>
 #include <QDebug>
 #include <QGraphicsScene>
@@ -24,8 +25,6 @@
 #include <opencv2/videoio.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
-
-
 #include <vector>
 
 #include "paramwindow.h"
@@ -37,7 +36,8 @@ class MainWindow;
 /**
  * @brief Modeluje ekran główny aplikacji
  *
- * Klasa zawiera wszystkie obiekty ekranu głównego
+ * Klasa  steruje wszystkimi obiektami ekranu głównego oraz odpowiada
+ * za poprawne przetwarzane sekwencji obrazów i wyświetlenie ich
  *
  */
 class MainWindow : public QMainWindow
@@ -48,7 +48,10 @@ public:
     /**
      * @brief Konstruktor
      *
-     * @param wskaźnik na rodzica
+     * Konstruktor modyfikuje przyciski (dodaje ikony). Ustawiane są wartości
+     *  początkowe.
+     *
+     * @param parent wskaźnik na rodzica
      */
     explicit MainWindow(QWidget *parent = nullptr);
 
@@ -61,25 +64,45 @@ public:
     * @brief closeEvent
     *
     * Funkcja wywołuje destruktor obiektu ParamWindow. Przed zamknięciem
-    * ekranu głównoego należy pozamykać wszystkie potomka.
+    * ekranu głównoego należy pozamykać ekran doadtkowy ekran z parametrami.
     *
-    * @param event
+    * @param event sygnał zamknięcia okna
     */
 void closeEvent(QCloseEvent *event);
 /**
- * @brief keyPressEvent reagujemy na klawisze
- * @param event
+ * @brief keyPressEvent Opisuje reakcje na wciśnięcie klawiszy
+ *
+ * Funkcja emituje sygnały na podstawie przyciśniętego klawisza kalawiatury
+ *
+ * @param event sygnał wciśnięcia jakiegoś przycisku
  */
 void keyPressEvent(QKeyEvent * event);
 
 private:
+/**
+ * @brief STEP_GATE_POSITION Maksymalny krok zmiany pozycji bramki
+ *
+ * Określa maksymalny krok o jaki bramka może się przemiścić w stosunku do
+ * długości i szerokości
+ */
 const double STEP_GATE_POSITION  = 0.1;
+/**
+ * @brief MAX_FRAMES Maksymalna liczba ramek modelujących obraz tła
+ */
 const unsigned int MAX_FRAMES = 128;
+
+/**
+ * @brief MIN_FRAMES Minimalny obraz ramek modelujących obraz tła
+ */
+
 const unsigned int MIN_FRAMES = 30;
 /**
  * @brief Funkcja wylicza średni obraz tła z pliku video.
  *
- * @param NumberOfFrames liczba ramek, z których obliczymy średni obraz tła.
+ * Funkcja wylicza średni obraz tła na średniej wartości piklesa z minimalnej
+ * liczby ramek.
+ *
+ * @param numberOfFrames liczba ramek, z których obliczymy średni obraz tła.
  * @param avrFrame wyliczony średni obraz tła
  * @return bool stan zakończenia działania metody
  *  true  - sukces
@@ -91,15 +114,21 @@ bool computeAverageBacgroundFrame(unsigned int numberOfFrames
 /**
  * @brief Zwiększa intensywność barw obrazu
  *
- * @param obraz wejściowy, który mam zmodyfikować
+ * @param inputImage obraz wejściowy, który zostaje zmodyfikowany
+ *
+ * Funkcja zwieksza nasycenie kolorów na podstawie operacji rozciągnięcia
+ * histogramu
  *
  * @return zwraca zmodyfikowany obraz
  */
 cv::Mat equalizeIntensity(const cv::Mat& inputImage);
 /**
- * @brief Mapy pikselowe, na których wyswietlamy obrazy
+ * @brief Mapa pikselowa wyswietlanego obrazu po lewej stronie aplikacji
  */
 QGraphicsPixmapItem leftPixmap;
+/**
+ * @brief Mapa pikselowa wyswietlanego obrazu po prawej stronie aplikacji
+ */
 QGraphicsPixmapItem rightPixmap;
 
 /**
@@ -111,7 +140,7 @@ cv::VideoCapture video;
  */
 int tresholdValue = 0;
 /**
- * @brief Określa czy film jest spauzowany
+ * @brief Określa czy film jest wstrzymany
  */
 bool setPause = false;
 /**
@@ -127,7 +156,7 @@ bool setGaussianFilter = false;
  */
 cv::Size kernelSize;
 /**
- * @brief Okno parametrów
+ * @brief Okno umożliwiające ustawianie paramterów aplikacji
  */
 ParamWindow parWin; /**< TODO: describe */
 /**
@@ -152,19 +181,28 @@ double yGate;
  */
 double length_gate;
 /**
- * @brief rotation Jezeli false to pionowo. Jezeleni true to poziomo
+ * @brief rotation Jeżeli false, to bramka jest pionowa. Jeżeli true, to
+ * bramka jest  pozioma
  */
 bool rotation;
 /**
- * @brief drawGate funkcja syruje bramkę na obrazie
+ * @brief drawGate funkcja rysuje bramkę na obrazie
+ *
+ * @param image obraz, na którym rysowana jest bramka
+ * @param centers punkty opisujące położenie środka wykrytych obiektów
  */
 void drawGate(cv::Mat &image, std::vector<cv::Point2f> &centers);
 /**
- * @brief gateIsEmpty jeżeli jakiś obiekt jest w bramce to false, intaczej true
+ * @brief gateIsEmpty jeżeli  obiekt jest w bramce to false, intaczej true
  */
 bool gateIsEmpty;
 /**
- * @brief CheckGateAndCounter sprawdza czy jakiś obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i uaktualnia licznik
+ * @brief CheckGateAndCounter sprawdza czy  obiekt jest w bramce,
+ *  aktualizauje zmienna globalna gateIsEmpty i uaktualnia licznik.
+ *
+ * Jeżeli zostanie wykryte przejście przez obiekt to funkcja zwiększa licznik
+ * bramki wirtualnej.
+ *
  * @param x0 lewy górny róg bramki
  * @param y0 lewy górny róg bramki
  * @param x1 prawy dolny róg bramki
@@ -181,7 +219,8 @@ unsigned int gateCounter;
 
 private slots:
     /**
-     * @brief
+     * @brief Otwiera eksplorer wczytytywania plików, zapisuje wybrany plik
+     *  i sprawdza poprawność formatu.
      *
      */
     void on_OpenFile_clicked();
@@ -189,101 +228,110 @@ private slots:
 
 
     /**
-     * @brief
+     * @brief Zatrzymuje odtwarzanie pliku video i umożliwia zamknięcie aplikacji
      *
      */
     void on_StopButton_clicked();
 
     /**
-     * @brief on_BinaryView_clicked
+     * @brief Otwiera po prawej stronie aplikacji obraz binarny
+     * modyfikowanego obrazu
      * @param checked
      */
     void on_BinaryView_clicked(bool checked);
     /**
-     * @brief
+     * @brief Otwiera okno z parametrami algorytmu
      *
      */
     void on_paramButton_clicked();
 
     /**
-     * @brief
+     * @brief Zapisuje parametr rozmiaru jądra, który został ustawiony w oknie
+     *  z paramterami.
      *
-     * @param position
+     * @param position wartość rozmiaru jądra
      */
     void paramWindow_KernelSize_set(int position);
     /**
-     * @brief
+     * @brief Zapisuje parametr progowania, który został ustawiony w oknie
+     *  z paramterami.
      *
-     * @param position
+     * @param position wartość progowania
      */
     void paramWindow_Treshold_set(int position);
     /**
-     * @brief
+     * @brief Zapisuje akutalne ustawienie opcji gaussowskiego filtrowania tła,
+     * które zostało zmienione w oknie z parametrami
      *
-     * @param option
+     * @param option stan parametru filtrowania
      */
     void paramWindow_GaussFilter_set(bool option);
     /**
-     * @brief
+     * @brief Zapisuje akutalne ustawienie opcji wypełniania dziur,
+     * które zostało zmienione w oknie z parametrami
      *
-     * @param option
+     * @param option stan paramteru wypełniania dziur
      */
     void paramWindow_FillHoles_set(bool option);
-
-
-
     /**
-     * @brief
+     * @brief Wywołuje funkcję przetwarzania i odtwarzania wybranego pliku video
      *
      */
     void on_PlayButton_clicked();
 
     /**
-     * @brief
+     * @brief Wywołuje funkcję przetwarzania i odtwarzania obrazu z kamery
      *
      */
     void on_CameraButton_clicked();
 
+
+    /**
+     * @brief on_upButton_clicked Przesuwa wirtualną bramkę w górę
+     */
     void on_upButton_clicked();
 
     /**
-     * @brief
+     * @brief Przesuwa wirtualną bramkę w dół
      *
      */
     void on_downButton_clicked();
 
     /**
-     * @brief
+     * @brief Przesuwa wirtualną bramkę w lewo
      *
      */
     void on_leftButton_clicked();
 
     /**
-     * @brief
+     * @brief Przesuwa wirtualną bramkę w prawo
      *
      */
     void on_rightButton_clicked();
 
     /**
-     * @brief
+     * @brief Zmienia rozmiar wirtualnej bramki
      *
      */
     void on_thinButton_clicked();
 
     /**
-     * @brief
+     * @brief Obraca wirtualną  bramkę o 90 stopni
      *
      */
     void on_rotateButton_clicked();
 
     /**
-     * @brief
+     * @brief Zeruje licznik wirtualnej bramki
      *
      */
     void on_clearCounterButton_clicked();
 
 private:
-    Ui::MainWindow *ui; /**< TODO: describe */
+    /**
+     * @brief ui Pole modeluje wygląd graficzny aplikacji
+     */
+    Ui::MainWindow *ui;
 
 };
 

@@ -70,7 +70,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    parWin.close();
+
+
     delete ui;
 
 }
@@ -78,6 +79,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+    parWin.close();
+
     if(video.isOpened()==true){
         QMessageBox::warning(this,"Uwaga!","Nie zamknięto video!");
         event->ignore();

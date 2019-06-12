@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -45,6 +52,20 @@ $(function() {
 </script>
 <div id="main-nav"></div>
 </div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('functions.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -60,41 +81,259 @@ $(function() {
 </div>
 
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div><ul>
+<div class="textblock">Here is a list of all class members with links to the classes they belong to:</div>
+
+<h3><a id="index_c"></a>- c -</h3><ul>
+<li>checkGateAndCounter()
+: <a class="el" href="class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a">MainWindow</a>
+</li>
 <li>closeEvent()
 : <a class="el" href="class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425">MainWindow</a>
 </li>
-<li>FillHolesSet()
-: <a class="el" href="class_param_window.html#ae2aed496d5f16b1a8838ac3d1e0071f0">ParamWindow</a>
+<li>computeAverageBacgroundFrame()
+: <a class="el" href="class_main_window.html#a2b2489e2441e51fef78f01d02810089e">MainWindow</a>
 </li>
-<li>GaussianFilterSet()
-: <a class="el" href="class_param_window.html#ab331c6c4628afa7aa99ea1bdc317136b">ParamWindow</a>
+</ul>
+
+
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>drawGate()
+: <a class="el" href="class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907">MainWindow</a>
 </li>
-<li>KernelSizeChanged()
-: <a class="el" href="class_param_window.html#acbb90cea9953d1a3fdb581e9d458b890">ParamWindow</a>
+</ul>
+
+
+<h3><a id="index_e"></a>- e -</h3><ul>
+<li>equalizeIntensity()
+: <a class="el" href="class_main_window.html#a3a148249a9a10f139ea3307e168e8720">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_f"></a>- f -</h3><ul>
+<li>fileName
+: <a class="el" href="class_main_window.html#a06968aebc42a16ab51c5888b4784075d">MainWindow</a>
+</li>
+<li>fillHoles
+: <a class="el" href="class_main_window.html#a57ab022b8536049c47df93fddccb884a">MainWindow</a>
+, <a class="el" href="class_param_window.html#a34b1dbfde3f703dc63a055540d08ccfd">ParamWindow</a>
+</li>
+<li>fillHolesSet()
+: <a class="el" href="class_param_window.html#adfc7690ce859d2c5ef5f75f792b1ba51">ParamWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_g"></a>- g -</h3><ul>
+<li>gateCounter
+: <a class="el" href="class_main_window.html#a43fdfea8b34a57b7ea52c1fbd7f0b495">MainWindow</a>
+</li>
+<li>gateIsEmpty
+: <a class="el" href="class_main_window.html#a1fb3e76e233fcce941fccc5eac60a89f">MainWindow</a>
+</li>
+<li>gaussianFilterSet()
+: <a class="el" href="class_param_window.html#a652ede9207c0dab866762926c219e8c5">ParamWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_k"></a>- k -</h3><ul>
+<li>kernelSize
+: <a class="el" href="class_main_window.html#ab7da1dc0db3c9ef2cd77d9e0e7be96fb">MainWindow</a>
+, <a class="el" href="class_param_window.html#a412914c69d335cd98bd6533da470cdf1">ParamWindow</a>
+</li>
+<li>kernelSizeChanged()
+: <a class="el" href="class_param_window.html#abb3ac3695d7487ff87a94373313a679a">ParamWindow</a>
 </li>
 <li>keyPressEvent()
 : <a class="el" href="class_main_window.html#a9c4f542263838b9ecd06eae839a42a34">MainWindow</a>
 </li>
+</ul>
+
+
+<h3><a id="index_l"></a>- l -</h3><ul>
+<li>leftPixmap
+: <a class="el" href="class_main_window.html#a2b40bc512a26988672ad63fbefd2a42b">MainWindow</a>
+</li>
+<li>length_gate
+: <a class="el" href="class_main_window.html#a38ea5679e282d41030243dea1e75f4e8">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_m"></a>- m -</h3><ul>
 <li>MainWindow()
 : <a class="el" href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d">MainWindow</a>
 </li>
+<li>MAX_FRAMES
+: <a class="el" href="class_main_window.html#a374375f20ee0e7f1618622f9341b38d7">MainWindow</a>
+</li>
+<li>MIN_FRAMES
+: <a class="el" href="class_main_window.html#a7e4c553305b01626737cc0c1b0cae6e9">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_o"></a>- o -</h3><ul>
+<li>on_BinaryView_clicked()
+: <a class="el" href="class_main_window.html#ada3af0889de52a525576768cbedd5a91">MainWindow</a>
+</li>
+<li>on_CameraButton_clicked()
+: <a class="el" href="class_main_window.html#a5b948ab2bd8fa0352e1a7ab620563125">MainWindow</a>
+</li>
+<li>on_clearCounterButton_clicked()
+: <a class="el" href="class_main_window.html#afe7e089e60e93d173f4b4dc34fe77909">MainWindow</a>
+</li>
+<li>on_downButton_clicked()
+: <a class="el" href="class_main_window.html#add6375a69afd3608c6e7f73ea44be147">MainWindow</a>
+</li>
+<li>on_KernelSlider_sliderMoved()
+: <a class="el" href="class_param_window.html#a822ad09a927dada8588f227b26b600f7">ParamWindow</a>
+</li>
+<li>on_leftButton_clicked()
+: <a class="el" href="class_main_window.html#af6dc2477a6bbc3853339ab9f19671cf1">MainWindow</a>
+</li>
+<li>on_OpenFile_clicked()
+: <a class="el" href="class_main_window.html#a836f789d3efd6d8b8fc669a11c24a255">MainWindow</a>
+</li>
+<li>on_paramButton_clicked()
+: <a class="el" href="class_main_window.html#ac3adf9dd97b581bbb465120454cfd283">MainWindow</a>
+</li>
+<li>on_PlayButton_clicked()
+: <a class="el" href="class_main_window.html#a8a86135bd8e605a57d440c6d62f02def">MainWindow</a>
+</li>
+<li>on_rightButton_clicked()
+: <a class="el" href="class_main_window.html#a7619f8e99a45d2c27d5929b4846e1864">MainWindow</a>
+</li>
+<li>on_rotateButton_clicked()
+: <a class="el" href="class_main_window.html#a822469c475b53469e62bf4e1ad25d548">MainWindow</a>
+</li>
+<li>on_setFillHoles_toggled()
+: <a class="el" href="class_param_window.html#abca84727e5df0f3e35470ab198122f54">ParamWindow</a>
+</li>
+<li>on_setFilter_toggled()
+: <a class="el" href="class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078">ParamWindow</a>
+</li>
+<li>on_StopButton_clicked()
+: <a class="el" href="class_main_window.html#ac1a6a5cff39ea14469295990ed3eac5b">MainWindow</a>
+</li>
+<li>on_thinButton_clicked()
+: <a class="el" href="class_main_window.html#a93ab0588a43eb4088ffa2a907f38d84c">MainWindow</a>
+</li>
+<li>on_TreshildSlider_sliderMoved()
+: <a class="el" href="class_param_window.html#abc262deac51a3565b12cae8635009877">ParamWindow</a>
+</li>
+<li>on_upButton_clicked()
+: <a class="el" href="class_main_window.html#a7a2279d39f924b704614f1d4d210c6eb">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_p"></a>- p -</h3><ul>
 <li>ParamWindow()
 : <a class="el" href="class_param_window.html#abea737dd65cbe29a1a343dc85e0dfcdc">ParamWindow</a>
 </li>
-<li>TresholdChanged()
-: <a class="el" href="class_param_window.html#a12800b00af14e8ba5baa6b58e201bb76">ParamWindow</a>
+<li>paramWindow_FillHoles_set()
+: <a class="el" href="class_main_window.html#a5803ed28ce17bbe1c0b5310b5c5a82d1">MainWindow</a>
 </li>
+<li>paramWindow_GaussFilter_set()
+: <a class="el" href="class_main_window.html#a84959b008921669947b6b3126cea29a4">MainWindow</a>
+</li>
+<li>paramWindow_KernelSize_set()
+: <a class="el" href="class_main_window.html#a4d0ec44317b9149ce3ce801d7d74e64d">MainWindow</a>
+</li>
+<li>paramWindow_Treshold_set()
+: <a class="el" href="class_main_window.html#a2d119d4ee2d933f92519109d41ac9bba">MainWindow</a>
+</li>
+<li>parWin
+: <a class="el" href="class_main_window.html#a5e7a598d2c7afc0965c1070c0ca3d651">MainWindow</a>
+</li>
+<li>playVideo()
+: <a class="el" href="class_main_window.html#af30186cc445125b50835b073091c5fa0">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_r"></a>- r -</h3><ul>
+<li>rightPixmap
+: <a class="el" href="class_main_window.html#abc513f094e95117ae590bb9bdccfd9fa">MainWindow</a>
+</li>
+<li>rotation
+: <a class="el" href="class_main_window.html#a79b2d63fcb9cac50485fd8a02a114c25">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_s"></a>- s -</h3><ul>
+<li>setGaussianFilter
+: <a class="el" href="class_main_window.html#af5a6a0b36d4865c9ed61a964dd4ab7ba">MainWindow</a>
+</li>
+<li>setPause
+: <a class="el" href="class_main_window.html#a3a7f34328de8ceacbee3a806c9992367">MainWindow</a>
+</li>
+<li>STEP_GATE_POSITION
+: <a class="el" href="class_main_window.html#aca49c8221ab9e4496d00977b783da119">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_t"></a>- t -</h3><ul>
+<li>tresholdChanged()
+: <a class="el" href="class_param_window.html#a4f9c90896c484d4157f1d77e03fb2fc1">ParamWindow</a>
+</li>
+<li>tresholdValue
+: <a class="el" href="class_main_window.html#a21bb63d5671fa44631ca7ebacc8dcb35">MainWindow</a>
+, <a class="el" href="class_param_window.html#a9661e62902380ab361b81416d5f93013">ParamWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_u"></a>- u -</h3><ul>
+<li>ui
+: <a class="el" href="class_main_window.html#a35466a70ed47252a0191168126a352a5">MainWindow</a>
+, <a class="el" href="class_param_window.html#a375418ca4eda09ded3838b3c0f10f03e">ParamWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_v"></a>- v -</h3><ul>
+<li>video
+: <a class="el" href="class_main_window.html#a0eff1d86b0761ce45949943c39c97654">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_x"></a>- x -</h3><ul>
+<li>xGate
+: <a class="el" href="class_main_window.html#ab819b980d1dbad8b0ee672423cd7858e">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_y"></a>- y -</h3><ul>
+<li>yGate
+: <a class="el" href="class_main_window.html#af5a2081c1deaa81e28513a5e38295d7b">MainWindow</a>
+</li>
+</ul>
+
+
+<h3><a id="index_0x7e"></a>- ~ -</h3><ul>
 <li>~MainWindow()
 : <a class="el" href="class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7">MainWindow</a>
 </li>
+<li>~ParamWindow()
+: <a class="el" href="class_param_window.html#a9897ef9437d8d986ddac089f214f7374">ParamWindow</a>
+</li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

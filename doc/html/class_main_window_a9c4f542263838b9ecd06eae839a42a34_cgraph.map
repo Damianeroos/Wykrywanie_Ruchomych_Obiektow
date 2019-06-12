@@ -1,0 +1,8 @@
+<map id="MainWindow::keyPressEvent" name="MainWindow::keyPressEvent">
+<area shape="rect" id="node2" href="$class_main_window.html#a822469c475b53469e62bf4e1ad25d548" title="Obraca wirtualną bramkę o 90 stopni. " alt="" coords="248,5,445,47"/>
+<area shape="rect" id="node3" href="$class_main_window.html#a93ab0588a43eb4088ffa2a907f38d84c" title="Zmienia rozmiar wirtualnej bramki. " alt="" coords="254,71,439,112"/>
+<area shape="rect" id="node4" href="$class_main_window.html#a7a2279d39f924b704614f1d4d210c6eb" title="on_upButton_clicked Przesuwa wirtualną bramkę w górę " alt="" coords="257,136,436,177"/>
+<area shape="rect" id="node5" href="$class_main_window.html#add6375a69afd3608c6e7f73ea44be147" title="Przesuwa wirtualną bramkę w dół " alt="" coords="249,201,444,243"/>
+<area shape="rect" id="node6" href="$class_main_window.html#af6dc2477a6bbc3853339ab9f19671cf1" title="Przesuwa wirtualną bramkę w lewo. " alt="" coords="255,267,438,308"/>
+<area shape="rect" id="node7" href="$class_main_window.html#a7619f8e99a45d2c27d5929b4846e1864" title="Przesuwa wirtualną bramkę w prawo. " alt="" coords="252,332,441,373"/>
+</map>

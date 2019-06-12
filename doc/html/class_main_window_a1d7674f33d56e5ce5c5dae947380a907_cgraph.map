@@ -1,0 +1,3 @@
+<map id="MainWindow::drawGate" name="MainWindow::drawGate">
+<area shape="rect" id="node2" href="$class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a" title="CheckGateAndCounter sprawdza czy obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i ua..." alt="" coords="215,5,405,47"/>
+</map>

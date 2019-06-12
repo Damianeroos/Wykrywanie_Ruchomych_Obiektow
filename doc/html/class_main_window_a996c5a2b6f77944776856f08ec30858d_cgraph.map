@@ -1,0 +1,6 @@
+<map id="MainWindow::MainWindow" name="MainWindow::MainWindow">
+<area shape="rect" id="node2" href="$class_main_window.html#a4d0ec44317b9149ce3ce801d7d74e64d" title="Zapisuje parametr rozmiaru jądra, który został ustawiony w oknie z paramterami. " alt="" coords="233,5,421,47"/>
+<area shape="rect" id="node3" href="$class_main_window.html#a2d119d4ee2d933f92519109d41ac9bba" title="Zapisuje parametr progowania, który został ustawiony w oknie z paramterami. " alt="" coords="233,71,421,112"/>
+<area shape="rect" id="node4" href="$class_main_window.html#a84959b008921669947b6b3126cea29a4" title="Zapisuje akutalne ustawienie opcji gaussowskiego filtrowania tła, które zostało zmienione w oknie z p..." alt="" coords="233,136,421,177"/>
+<area shape="rect" id="node5" href="$class_main_window.html#a5803ed28ce17bbe1c0b5310b5c5a82d1" title="Zapisuje akutalne ustawienie opcji wypełniania dziur, które zostało zmienione w oknie z parametrami..." alt="" coords="233,201,421,243"/>
+</map>

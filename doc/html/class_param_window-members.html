@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -44,6 +51,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('class_param_window.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -58,7 +80,6 @@ $(function() {
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">ParamWindow Member List</div>  </div>
@@ -67,18 +88,29 @@ $(function() {
 
 <p>This is the complete list of members for <a class="el" href="class_param_window.html">ParamWindow</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#ae2aed496d5f16b1a8838ac3d1e0071f0">FillHolesSet</a>(bool option)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_param_window.html#ab331c6c4628afa7aa99ea1bdc317136b">GaussianFilterSet</a>(bool option)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#acbb90cea9953d1a3fdb581e9d458b890">KernelSizeChanged</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#a34b1dbfde3f703dc63a055540d08ccfd">fillHoles</a></td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#adfc7690ce859d2c5ef5f75f792b1ba51">fillHolesSet</a>(bool option)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#a652ede9207c0dab866762926c219e8c5">gaussianFilterSet</a>(bool option)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#a412914c69d335cd98bd6533da470cdf1">kernelSize</a></td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#abb3ac3695d7487ff87a94373313a679a">kernelSizeChanged</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#a822ad09a927dada8588f227b26b600f7">on_KernelSlider_sliderMoved</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">slot</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#abca84727e5df0f3e35470ab198122f54">on_setFillHoles_toggled</a>(bool checked)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">slot</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078">on_setFilter_toggled</a>(bool checked)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">slot</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#abc262deac51a3565b12cae8635009877">on_TreshildSlider_sliderMoved</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span><span class="mlabel">slot</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_param_window.html#abea737dd65cbe29a1a343dc85e0dfcdc">ParamWindow</a>(QWidget *parent=nullptr)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#a12800b00af14e8ba5baa6b58e201bb76">TresholdChanged</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>~ParamWindow</b>() (defined in <a class="el" href="class_param_window.html">ParamWindow</a>)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#a4f9c90896c484d4157f1d77e03fb2fc1">tresholdChanged</a>(int position)</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">signal</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#a9661e62902380ab361b81416d5f93013">tresholdValue</a></td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_param_window.html#a375418ca4eda09ded3838b3c0f10f03e">ui</a></td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_param_window.html#a9897ef9437d8d986ddac089f214f7374">~ParamWindow</a>()</td><td class="entry"><a class="el" href="class_param_window.html">ParamWindow</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

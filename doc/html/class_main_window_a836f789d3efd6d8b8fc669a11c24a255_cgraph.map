@@ -1,0 +1,6 @@
+<map id="MainWindow::on_OpenFile_clicked" name="MainWindow::on_OpenFile_clicked">
+<area shape="rect" id="node2" href="$class_main_window.html#af30186cc445125b50835b073091c5fa0" title="Odtawrza film, przetwarza go i wyświetla. " alt="" coords="232,42,395,69"/>
+<area shape="rect" id="node3" href="$class_main_window.html#a2b2489e2441e51fef78f01d02810089e" title="Funkcja wylicza średni obraz tła z pliku video. " alt="" coords="443,5,645,47"/>
+<area shape="rect" id="node4" href="$class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907" title="drawGate funkcja rysuje bramkę na obrazie " alt="" coords="463,71,625,98"/>
+<area shape="rect" id="node5" href="$class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a" title="CheckGateAndCounter sprawdza czy obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i ua..." alt="" coords="693,64,884,105"/>
+</map>

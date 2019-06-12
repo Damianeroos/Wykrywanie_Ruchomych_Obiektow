@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Wykrywanie Ruchomych Obiektów
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">2.0</span>
    </div>
    <div id="projectbrief">...</div>
   </td>
@@ -145,8 +145,10 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a412914c69d335cd98bd6533da470cdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00015">15</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
+<div class="textblock"><p>Modeluje okno z parametrami algorytmu odejmowania tła. </p>
+<p>Klasa opisuje okno, które daje możliwość ustawienia parametrów algorytmu modelowania tła. Opcję, które można ustawić: wypełnianie dziur, rozmiar jądra , wartość progowania, filtrowanie gaussa. </p>
+
+<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00019">19</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abea737dd65cbe29a1a343dc85e0dfcdc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abea737dd65cbe29a1a343dc85e0dfcdc">&#9670;&nbsp;</a></span>ParamWindow()</h2>
@@ -171,9 +173,11 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Konstruktor, w którym ustawiane są wartości początkowe. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">parent</td><td></td></tr>
+    <tr><td class="paramname">parent</td><td>wskaźnik na rodzica widżetu </td></tr>
   </table>
   </dd>
 </dl>
@@ -196,6 +200,8 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>destruktor klasy </p>
 
 <p class="definition">Definition at line <a class="el" href="paramwindow_8cpp_source.html#l00020">20</a> of file <a class="el" href="paramwindow_8cpp_source.html">paramwindow.cpp</a>.</p>
 
@@ -225,9 +231,11 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>przekazuje informację o operacji wypełniania dziur do głównego okna aplikacji </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">option</td><td></td></tr>
+    <tr><td class="paramname">option</td><td>stan operacji filtrowania dziur </td></tr>
   </table>
   </dd>
 </dl>
@@ -237,7 +245,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_param_window_adfc7690ce859d2c5ef5f75f792b1ba51_icgraph.png" border="0" usemap="#class_param_window_adfc7690ce859d2c5ef5f75f792b1ba51_icgraph" alt=""/></div>
 <map name="class_param_window_adfc7690ce859d2c5ef5f75f792b1ba51_icgraph" id="class_param_window_adfc7690ce859d2c5ef5f75f792b1ba51_icgraph">
 <area shape="rect" id="node2" href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="249,5,429,32"/>
-<area shape="rect" id="node3" href="class_param_window.html#abca84727e5df0f3e35470ab198122f54" title="ParamWindow::on_setFillHoles\l_toggled" alt="" coords="236,57,441,98"/>
+<area shape="rect" id="node3" href="class_param_window.html#abca84727e5df0f3e35470ab198122f54" title="zapisuje opcję wypełniania dziur obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał ..." alt="" coords="236,57,441,98"/>
 </map>
 </div>
 
@@ -266,9 +274,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>przekazuje informację o operacji filtrowania do głównego okna aplikacji </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">option</td><td></td></tr>
+    <tr><td class="paramname">option</td><td>stan filtrowania </td></tr>
   </table>
   </dd>
 </dl>
@@ -278,7 +288,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_param_window_a652ede9207c0dab866762926c219e8c5_icgraph.png" border="0" usemap="#class_param_window_a652ede9207c0dab866762926c219e8c5_icgraph" alt=""/></div>
 <map name="class_param_window_a652ede9207c0dab866762926c219e8c5_icgraph" id="class_param_window_a652ede9207c0dab866762926c219e8c5_icgraph">
 <area shape="rect" id="node2" href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="271,5,451,32"/>
-<area shape="rect" id="node3" href="class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078" title="ParamWindow::on_setFilter\l_toggled" alt="" coords="269,57,452,98"/>
+<area shape="rect" id="node3" href="class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078" title="zapisuje opcję filtrowania obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał ..." alt="" coords="269,57,452,98"/>
 </map>
 </div>
 
@@ -307,9 +317,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>przekazuje informację o zmianie wartości rozmiaru jądra do głównego okna aplikacji </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">position</td><td>rozmiar jądra </td></tr>
   </table>
   </dd>
 </dl>
@@ -319,7 +331,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_param_window_abb3ac3695d7487ff87a94373313a679a_icgraph.png" border="0" usemap="#class_param_window_abb3ac3695d7487ff87a94373313a679a_icgraph" alt=""/></div>
 <map name="class_param_window_abb3ac3695d7487ff87a94373313a679a_icgraph" id="class_param_window_abb3ac3695d7487ff87a94373313a679a_icgraph">
 <area shape="rect" id="node2" href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="295,5,475,32"/>
-<area shape="rect" id="node3" href="class_param_window.html#a822ad09a927dada8588f227b26b600f7" title="ParamWindow::on_KernelSlider\l_sliderMoved" alt="" coords="281,57,488,98"/>
+<area shape="rect" id="node3" href="class_param_window.html#a822ad09a927dada8588f227b26b600f7" title="zapisuje wartość, którą ustawiono na suwaku rozmiaru jądra i emituje odpowiedni sygnał ..." alt="" coords="281,57,488,98"/>
 </map>
 </div>
 
@@ -348,9 +360,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>zapisuje wartość, którą ustawiono na suwaku rozmiaru jądra i emituje odpowiedni sygnał </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">position</td><td>pozycja suwaka </td></tr>
   </table>
   </dd>
 </dl>
@@ -382,9 +396,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>zapisuje opcję wypełniania dziur obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">checked</td><td></td></tr>
+    <tr><td class="paramname">checked</td><td>stan przełącznika wypełniania dziur </td></tr>
   </table>
   </dd>
 </dl>
@@ -416,9 +432,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>zapisuje opcję filtrowania obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">checked</td><td></td></tr>
+    <tr><td class="paramname">checked</td><td>stan przełącznika filtrowania </td></tr>
   </table>
   </dd>
 </dl>
@@ -450,9 +468,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>zapisuje wartość, którą ustawiono na suwaku progowania i emituje odpowiedni sygnał </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">position</td><td>pozycja suwaka </td></tr>
   </table>
   </dd>
 </dl>
@@ -484,9 +504,11 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>przekazuje informację o zmianie wartości progowania do głównego okna aplikacji </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">position</td><td></td></tr>
+    <tr><td class="paramname">position</td><td>rozmiar progowania </td></tr>
   </table>
   </dd>
 </dl>
@@ -496,7 +518,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="class_param_window_a4f9c90896c484d4157f1d77e03fb2fc1_icgraph.png" border="0" usemap="#class_param_window_a4f9c90896c484d4157f1d77e03fb2fc1_icgraph" alt=""/></div>
 <map name="class_param_window_a4f9c90896c484d4157f1d77e03fb2fc1_icgraph" id="class_param_window_a4f9c90896c484d4157f1d77e03fb2fc1_icgraph">
 <area shape="rect" id="node2" href="class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="268,5,448,32"/>
-<area shape="rect" id="node3" href="class_param_window.html#abc262deac51a3565b12cae8635009877" title="ParamWindow::on_Treshild\lSlider_sliderMoved" alt="" coords="267,57,449,98"/>
+<area shape="rect" id="node3" href="class_param_window.html#abc262deac51a3565b12cae8635009877" title="zapisuje wartość, którą ustawiono na suwaku progowania i emituje odpowiedni sygnał ..." alt="" coords="267,57,449,98"/>
 </map>
 </div>
 
@@ -522,9 +544,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>TODO: describe </p>
 
-<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00066">66</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
+<p>fillHoles opcja wypełniania dziur </p>
+
+<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00082">82</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
 
 </div>
 </div>
@@ -547,9 +570,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>TODO: describe </p>
 
-<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00067">67</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
+<p>kernelSize parametr rozmiaru jądra w algorytmie MOG2 </p>
+
+<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00086">86</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
 
 </div>
 </div>
@@ -572,9 +596,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>TODO: describe </p>
 
-<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00065">65</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
+<p>tresholdValue wartość progowania </p>
+
+<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00078">78</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
 
 </div>
 </div>
@@ -597,9 +622,10 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>TODO: describe </p>
 
-<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00063">63</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
+<p>ui Pole modeluje wygląd graficzny widżetu </p>
+
+<p class="definition">Definition at line <a class="el" href="paramwindow_8h_source.html#l00074">74</a> of file <a class="el" href="paramwindow_8h_source.html">paramwindow.h</a>.</p>
 
 </div>
 </div>

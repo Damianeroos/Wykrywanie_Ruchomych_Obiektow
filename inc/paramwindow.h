@@ -9,7 +9,11 @@ class ParamWindow;
 }
 
 /**
- * @brief
+ * @brief Modeluje okno z parametrami algorytmu odejmowania tła.
+ *
+ * Klasa opisuje okno, które daje możliwość ustawienia parametrów algorytmu
+ * modelowania tła. Opcję, które można ustawić: wypełnianie dziur, rozmiar jądra
+ * , wartość progowania, filtrowanie gaussa.
  *
  */
 class ParamWindow : public QWidget
@@ -18,76 +22,95 @@ class ParamWindow : public QWidget
 
 public:
     /**
-     * @brief
+     * @brief Konstruktor, w którym ustawiane są wartości początkowe
      *
-     * @param parent
+     * @param parent wskaźnik na rodzica widżetu
      */
     explicit ParamWindow(QWidget *parent = nullptr);
     /**
-     * @brief
+     * @brief destruktor klasy
      *
      */
     ~ParamWindow();
 
 private slots:
     /**
-     * @brief
+     * @brief zapisuje wartość, którą ustawiono na suwaku progowania i emituje
+     * odpowiedni sygnał
      *
-     * @param position
+     * @param position pozycja suwaka
      */
     void on_TreshildSlider_sliderMoved(int position);
 
     /**
-     * @brief
+     * @brief zapisuje wartość, którą ustawiono na suwaku rozmiaru jądra i emituje
+     * odpowiedni sygnał
      *
-     * @param position
+     * @param position pozycja suwaka
      */
     void on_KernelSlider_sliderMoved(int position);
 
     /**
-     * @brief
+     * @brief zapisuje opcję filtrowania obrazu, którą ustawiono w okienku i emituje
+     * odpowiedni sygnał
      *
-     * @param checked
+     * @param checked stan przełącznika filtrowania
      */
     void on_setFilter_toggled(bool checked);
 
 
     /**
-     * @brief
+     * @brief zapisuje opcję wypełniania dziur obrazu, którą ustawiono
+     * w okienku i emituje odpowiedni sygnał
      *
-     * @param checked
+     * @param checked stan przełącznika wypełniania dziur
      */
     void on_setFillHoles_toggled(bool checked);
 
 private:
-    Ui::ParamWindow *ui; /**< TODO: describe */
-
-    int tresholdValue = 0; /**< TODO: describe */
-    bool fillHoles = false; /**< TODO: describe */
-    cv::Size kernelSize; /**< TODO: describe */
+    /**
+     * @brief ui Pole modeluje wygląd graficzny widżetu
+     */
+    Ui::ParamWindow *ui;
+    /**
+     * @brief tresholdValue wartość progowania
+     */
+    int tresholdValue = 0;
+    /**
+     * @brief fillHoles opcja wypełniania dziur
+     */
+    bool fillHoles = false;
+    /**
+     * @brief kernelSize parametr rozmiaru jądra w algorytmie MOG2
+     */
+    cv::Size kernelSize;
 signals:
  /**
-  * @brief
+  * @brief przekazuje informację o zmianie wartości rozmiaru jądra
+  * do głównego okna aplikacji
   *
-  * @param position
+  * @param position rozmiar jądra
   */
  void kernelSizeChanged(int position);
  /**
-  * @brief
+  * @brief przekazuje informację o zmianie wartości progowania
+  * do głównego okna aplikacji
   *
-  * @param position
+  * @param position rozmiar progowania
   */
  void tresholdChanged(int position);
  /**
-  * @brief
+  * @brief przekazuje informację o operacji filtrowania do głównego
+  * okna aplikacji
   *
-  * @param option
+  * @param option  stan filtrowania
   */
  void gaussianFilterSet(bool option);
  /**
-  * @brief
+  * @brief przekazuje informację o operacji wypełniania dziur do głównego
+  * okna aplikacji
   *
-  * @param option
+  * @param option stan operacji filtrowania dziur
   */
  void fillHolesSet(bool option);
 };

@@ -1,4 +1,4 @@
 <map id="ParamWindow::gaussianFilterSet" name="ParamWindow::gaussianFilterSet">
 <area shape="rect" id="node2" href="$class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="271,5,451,32"/>
-<area shape="rect" id="node3" href="$class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078" title="ParamWindow::on_setFilter\l_toggled" alt="" coords="269,57,452,98"/>
+<area shape="rect" id="node3" href="$class_param_window.html#a610a09ebe2754ed4f0e3565d40fba078" title="zapisuje opcję filtrowania obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał ..." alt="" coords="269,57,452,98"/>
 </map>

@@ -1,4 +1,4 @@
 <map id="ParamWindow::fillHolesSet" name="ParamWindow::fillHolesSet">
 <area shape="rect" id="node2" href="$class_main_window.html#a996c5a2b6f77944776856f08ec30858d" title="Konstruktor. " alt="" coords="249,5,429,32"/>
-<area shape="rect" id="node3" href="$class_param_window.html#abca84727e5df0f3e35470ab198122f54" title="ParamWindow::on_setFillHoles\l_toggled" alt="" coords="236,57,441,98"/>
+<area shape="rect" id="node3" href="$class_param_window.html#abca84727e5df0f3e35470ab198122f54" title="zapisuje opcję wypełniania dziur obrazu, którą ustawiono w okienku i emituje odpowiedni sygnał ..." alt="" coords="236,57,441,98"/>
 </map>

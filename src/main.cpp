@@ -2,7 +2,9 @@
 #include <QApplication>
 
 /**
- * @brief
+ * @brief Głowna funkcja programu
+ *
+ * Funkcja wyświetla główne okno graficzne aplikacji
  *
  * @param argc
  * @param argv[]

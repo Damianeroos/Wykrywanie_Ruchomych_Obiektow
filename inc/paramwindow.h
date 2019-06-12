@@ -1,6 +1,11 @@
 #ifndef PARAMWINDOW_H
 #define PARAMWINDOW_H
-
+/*!
+  * \file
+  * \brief Definicja klasy ParamWindow
+  *
+  * Plik zawiera definicję klasy MainWindow.
+  */
 #include <QWidget>
 #include <opencv4/opencv2/opencv.hpp>
 

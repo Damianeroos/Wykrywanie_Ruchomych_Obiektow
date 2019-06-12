@@ -80,7 +80,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     parWin.close();
-
+    video.release();
     if(video.isOpened()==true){
         QMessageBox::warning(this,"Uwaga!","Nie zamknięto video!");
         event->ignore();
@@ -181,6 +181,9 @@ cv::Mat MainWindow::equalizeIntensity(const cv::Mat &inputImage)
 
 int MainWindow::playVideo()
 {
+    ui->OpenFile->setEnabled(false);
+    ui->CameraButton->setEnabled(false);
+
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
     cv::Mat kernel;
     std::vector<std::vector<cv::Point> > finalContours,filledContours;
@@ -376,6 +379,11 @@ void MainWindow::on_OpenFile_clicked()
 
 void MainWindow::on_StopButton_clicked()
 {
+    ui->OpenFile->setEnabled(true);
+    ui->CameraButton->setEnabled(true);
+    ui->PlayButton->setEnabled(false);
+    ui->StopButton->setEnabled(false);
+    setPause = false;
     video.release();
 }
 
@@ -436,9 +444,8 @@ void MainWindow::on_PlayButton_clicked()
 
 void MainWindow::on_CameraButton_clicked()
 {
-    if(video.isOpened()){
-        video.release();
-    }
+    ui->OpenFile->setEnabled(false);
+    ui->CameraButton->setEnabled(false);
     ui->StopButton->setEnabled(true);
 
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
@@ -455,7 +462,7 @@ void MainWindow::on_CameraButton_clicked()
         return ;
     }
     video = cap;
-    video >> originalFrame;
+    video>> originalFrame;
     while(video.isOpened()){
         //sprawdzamy czy jest pauza
         if(!setPause){
@@ -466,23 +473,20 @@ void MainWindow::on_CameraButton_clicked()
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!originalFrame.empty()){
-
             /*przetwarzamy i wyswietlamy ramki*/
             binaryFrame = fgMaskMOG2.clone();
-            if(setGaussianFilter){
+            if(setGaussianFilter && !binaryFrame.empty()){
                 cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
             }
-
-            if(kernelSize.width > 0){
+            if(kernelSize.width > 0 && !binaryFrame.empty()){
                 kernel.release();
                 kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
                 cv::erode(binaryFrame,binaryFrame,kernel);//erozja
                 // zamkniecie (dylatacja -> erozja)
                 cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel);
             }
-
             //znajdujemy, łączymy i rysujemy krawędzie
-            if(fillHoles){
+            if(fillHoles && !binaryFrame.empty()){
                 cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL
                                  ,cv::CHAIN_APPROX_SIMPLE);
                 for(size_t i = 0 ; i < filledContours.size() ; i++){
@@ -492,29 +496,32 @@ void MainWindow::on_CameraButton_clicked()
             }
             cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL
                              ,cv::CHAIN_APPROX_SIMPLE);
-
             QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows
                          ,static_cast<int>(binaryFrame.step)
-                         ,QImage::Format_Grayscale8);
-            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()));
-
-
+                         , QImage::Format_Grayscale8);
+            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
             finalFrame = originalFrame.clone();
             cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),1);
             std::vector<std::vector<cv::Point> >hull( finalContours.size() );
+            std::vector<cv::Point2f>centers( finalContours.size() );
+            std::vector<float>radius( finalContours.size() );
             for( size_t i = 0; i < finalContours.size(); i++ )
             {
-                cv::convexHull( finalContours[i], hull[i] );
+                approxPolyDP( finalContours[i], hull[i], 3, true );
+                minEnclosingCircle( hull[i], centers[i], radius[i] );
             }
+            for( size_t i = 0; i< finalContours.size(); i++ )
+            {
+                circle( finalFrame, centers[i]
+                        , static_cast<int>(radius[i]*static_cast<float>(1.1))
+                        ,cv::Scalar(134,3,255), 2 );
 
-            cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
-
-
+            }
+            drawGate(finalFrame,centers);
             QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows
-                        , static_cast<int>(finalFrame.step)
-                        , QImage::Format_RGB888);
-            leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
-
+                        ,static_cast<int>(finalFrame.step)
+                        ,QImage::Format_RGB888);
+            leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
             if(cv::waitKey(30) >= 0) break;
         }
         else{

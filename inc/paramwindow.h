@@ -62,8 +62,8 @@ private slots:
 private:
     Ui::ParamWindow *ui; /**< TODO: describe */
 
-    int TresholdValue = 0; /**< TODO: describe */
-    bool FillHoles = false; /**< TODO: describe */
+    int tresholdValue = 0; /**< TODO: describe */
+    bool fillHoles = false; /**< TODO: describe */
     cv::Size kernelSize; /**< TODO: describe */
 signals:
  /**
@@ -71,25 +71,25 @@ signals:
   *
   * @param position
   */
- void KernelSizeChanged(int position);
+ void kernelSizeChanged(int position);
  /**
   * @brief
   *
   * @param position
   */
- void TresholdChanged(int position);
+ void tresholdChanged(int position);
  /**
   * @brief
   *
   * @param option
   */
- void GaussianFilterSet(bool option);
+ void gaussianFilterSet(bool option);
  /**
   * @brief
   *
   * @param option
   */
- void FillHolesSet(bool option);
+ void fillHolesSet(bool option);
 };
 
 #endif // PARAMWINDOW_H

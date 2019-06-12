@@ -4,11 +4,7 @@
 #include <QMessageBox>
 #include <opencv2/video/background_segm.hpp>
 #include <sstream>
-/**
- * @brief
- *
- * @param parent
- */
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -18,18 +14,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->rightView->setScene(new QGraphicsScene(this));
     ui->leftView->scene()->addItem(&leftPixmap);
     ui->rightView->scene()->addItem(&rightPixmap);
-
     ui->rightView->setVisible(false);
-
     ui->PlayButton->setEnabled(false);
     ui->StopButton->setEnabled(false);
 
-
-    file_name = QString(); //ustawiamy stringa na NULL
-    TresholdValue = 30;
+    fileName = QString(); //ustawiamy stringa na NULL
+    //wartości inicjalizacyjne
+    tresholdValue = 30;
     kernelSize.width = 7;
     kernelSize.height = 7;
-
 
     ui->PlayButton->setText("");
     ui->StopButton->setText("");
@@ -61,24 +54,20 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->thinButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_TitleBarMinButton));
     ui->clearCounterButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_DialogResetButton));
 
-    connect(&parWin,&ParamWindow::KernelSizeChanged,this,&MainWindow::on_paramWindow_KernelSize_set);
-    connect(&parWin,&ParamWindow::TresholdChanged,this,&MainWindow::on_paramWindow_Treshold_set);
-    connect(&parWin,&ParamWindow::GaussianFilterSet,this,&MainWindow::on_paramWindow_GaussFilter_set);
-    connect(&parWin,&ParamWindow::FillHolesSet,this,&MainWindow::on_paramWindow_FillHoles_set);
+    connect(&parWin,&ParamWindow::kernelSizeChanged,this,&MainWindow::paramWindow_KernelSize_set);
+    connect(&parWin,&ParamWindow::tresholdChanged,this,&MainWindow::paramWindow_Treshold_set);
+    connect(&parWin,&ParamWindow::gaussianFilterSet,this,&MainWindow::paramWindow_GaussFilter_set);
+    connect(&parWin,&ParamWindow::fillHolesSet,this,&MainWindow::paramWindow_FillHoles_set);
 
-
-    x_gate = 0;
-    y_gate = 0;
+    xGate = 0;
+    yGate = 0;
     length_gate = 0;
     rotation = false;
-    GateCounter = 0;
+    gateCounter = 0;
     gateIsEmpty = true;
 }
 
-/**
- * @brief
- *
- */
+
 MainWindow::~MainWindow()
 {
     parWin.close();
@@ -86,14 +75,10 @@ MainWindow::~MainWindow()
 
 }
 
-/**
- * @brief
- *
- * @param event
- */
+
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if(video.isOpened()){
+    if(video.isOpened()==true){
         QMessageBox::warning(this,"Uwaga!","Nie zamknięto video!");
         event->ignore();
     }
@@ -129,31 +114,32 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
         on_rightButton_clicked();
         break;
     }
+    default:{
+        ;//tu jest pusto
+    }
     }
 }
 
-bool MainWindow::ComputeAverageBacgroundFrame(unsigned int NumberOfFrames, cv::Mat &avrFrame)
+bool MainWindow::computeAverageBacgroundFrame(unsigned int NumberOfFrames
+                                              ,cv::Mat &avrFrame)
 {
     cv::Mat tempFrame;
-
-    if(NumberOfFrames == 0 || NumberOfFrames > 128){ //maksymalnie możemy wybrac 128 ramek
+    //za mało ramek
+    if(NumberOfFrames == 0 || NumberOfFrames > MAX_FRAMES){
         return false;
     }
-    if(file_name.isNull()){ //nie podano nazwy pliku video
+    if(fileName.isNull()==true){ //nie podano nazwy pliku video
         return false;
     }
-    if(!video.open(file_name.toStdString())){ //nie można otworzyć pliku
+    if(video.open(fileName.toStdString())==false){ //nie można otworzyć pliku
         return false;
     }
-
     video >> tempFrame;
-    // tempFrame = equalizeIntensity(tempFrame);
     avrFrame = tempFrame.clone();
-    avrFrame.convertTo(avrFrame,CV_32F);
+    avrFrame.convertTo(avrFrame,CV_32F);//zwiększamy maks. wartość piksela
     cv::accumulate(tempFrame,avrFrame);
     for(unsigned int i = 0 ; i < NumberOfFrames - 1 ; i++){
         video >> tempFrame;
-        //  tempFrame = equalizeIntensity(tempFrame);
         if(tempFrame.empty()){
             tempFrame.release();
             return false;
@@ -162,7 +148,6 @@ bool MainWindow::ComputeAverageBacgroundFrame(unsigned int NumberOfFrames, cv::M
             cv::accumulate(tempFrame,avrFrame);
         }
     }
-
     avrFrame.convertTo(avrFrame,CV_8U,1.0/NumberOfFrames);
     tempFrame.release();
     video.release();
@@ -172,18 +157,16 @@ bool MainWindow::ComputeAverageBacgroundFrame(unsigned int NumberOfFrames, cv::M
 
 cv::Mat MainWindow::equalizeIntensity(const cv::Mat &inputImage)
 {
+    //jeżeli obraz składa się z 3 kanałów to jest kolorowy
     if(inputImage.channels() >= 3)
     {
         cv::Mat ycrcb;
-
         cv::cvtColor(inputImage,ycrcb,cv::COLOR_BGR2YCrCb);
-
         std::vector<cv::Mat> channels;
-        split(ycrcb,channels);
-
-        cv::equalizeHist(channels[0], channels[0]);
-
         cv::Mat result;
+
+        split(ycrcb,channels);
+        cv::equalizeHist(channels[0], channels[0]);
         merge(channels,ycrcb);
         cv::cvtColor(ycrcb,result,cv::COLOR_YCrCb2BGR);
 
@@ -193,97 +176,81 @@ cv::Mat MainWindow::equalizeIntensity(const cv::Mat &inputImage)
     return cv::Mat();
 }
 
-int MainWindow::PlayVideo()
+int MainWindow::playVideo()
 {
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
     cv::Mat kernel;
     std::vector<std::vector<cv::Point> > finalContours,filledContours;
-   cv::Mat fgMaskMOG2; //fg mask fg mask generated by MOG2 method
-   cv::Ptr<cv::BackgroundSubtractorMOG2> pMOG2;
-   pMOG2 = cv::createBackgroundSubtractorMOG2(); //MOG2 Background subtractor
+    cv::Mat fgMaskMOG2; //fg mask fg mask generated by MOG2 method
+    cv::Ptr<cv::BackgroundSubtractorMOG2> pMOG2;
+    pMOG2 = cv::createBackgroundSubtractorMOG2(); //MOG2 Background subtractor
 
-    if(!ComputeAverageBacgroundFrame(30,referenceFrame)){
+    if(!computeAverageBacgroundFrame(MIN_FRAMES,referenceFrame)){
         qDebug("nie można obliczyć obrazu referencyjnego");
         return 0;
     }
-
-
-
     if(!video.isOpened()){
-        video.open(file_name.toStdString());
+        video.open(fileName.toStdString());
     }
-
-
     video>> originalFrame;
-
-    // tempframe = frame.clone();
     while(video.isOpened()){
         //sprawdzamy czy jest pauza
-        if(!SetPause){
+        if(!setPause){
             video >> originalFrame;
             pMOG2->apply(originalFrame,fgMaskMOG2);
-
         }
-
-
-
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!originalFrame.empty()){
-
             /*przetwarzamy i wyswietlamy ramki*/
-
-
-
             binaryFrame = fgMaskMOG2.clone();
             if(setGaussianFilter && !binaryFrame.empty()){
                 cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
             }
-
             if(kernelSize.width > 0 && !binaryFrame.empty()){
                 kernel.release();
                 kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
                 cv::erode(binaryFrame,binaryFrame,kernel);//erozja
-                cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel); // zamkniecie (dylatacja -> erozja)
+                // zamkniecie (dylatacja -> erozja)
+                cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel);
             }
-
             //znajdujemy, łączymy i rysujemy krawędzie
-
-            if(FillHoles && !binaryFrame.empty()){
-                cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+            if(fillHoles && !binaryFrame.empty()){
+                cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL
+                                 ,cv::CHAIN_APPROX_SIMPLE);
                 for(size_t i = 0 ; i < filledContours.size() ; i++){
-                    cv::drawContours(binaryFrame,filledContours,int(i),cv::Scalar(255,255,255),cv::FILLED);
+                    cv::drawContours(binaryFrame,filledContours,int(i)
+                                     ,cv::Scalar(255,255,255),cv::FILLED);
                 }
             }
-            cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
-
-            QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows,  static_cast<int>(binaryFrame.step), QImage::Format_Grayscale8);
+            cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL
+                             ,cv::CHAIN_APPROX_SIMPLE);
+            QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows
+                         ,static_cast<int>(binaryFrame.step)
+                         , QImage::Format_Grayscale8);
             rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
-
-
             finalFrame = originalFrame.clone();
             cv::drawContours(finalFrame,finalContours,-1,cv::Scalar(0,255,0),1);
             std::vector<std::vector<cv::Point> >hull( finalContours.size() );
             std::vector<cv::Point2f>centers( finalContours.size() );
             std::vector<float>radius( finalContours.size() );
-
             for( size_t i = 0; i < finalContours.size(); i++ )
-                {
-                    approxPolyDP( finalContours[i], hull[i], 3, true );
-                    minEnclosingCircle( hull[i], centers[i], radius[i] );
-                }
+            {
+                approxPolyDP( finalContours[i], hull[i], 3, true );
+                minEnclosingCircle( hull[i], centers[i], radius[i] );
+            }
             for( size_t i = 0; i< finalContours.size(); i++ )
-             {
-                 circle( finalFrame, centers[i], (int)(radius[i]*1.1), cv::Scalar(134,3,255), 2 );
+            {
+                circle( finalFrame, centers[i]
+                        , static_cast<int>(radius[i]*static_cast<float>(1.1))
+                        ,cv::Scalar(134,3,255), 2 );
 
             }
-
             drawGate(finalFrame,centers);
-
-            QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
+            QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows
+                        ,static_cast<int>(finalFrame.step)
+                        ,QImage::Format_RGB888);
             leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
-
-
             if(cv::waitKey(30) >= 0) break;
         }
         else{
@@ -302,91 +269,84 @@ int MainWindow::PlayVideo()
 }
 
 void MainWindow::drawGate(cv::Mat &image, std::vector<cv::Point2f> &centers)
-{
-
+{  
     if(length_gate>0){
         cv::Size imageSize = image.size();
-
         int x0, y0,x1,y1;
 
-        x0 = int(imageSize.width*x_gate); //lewy górny róg bramki
-        y0 = int(imageSize.height*y_gate);
-
-
+        x0 = int(imageSize.width*xGate); //lewy górny róg bramki
+        y0 = int(imageSize.height*yGate);
         //obliczamy prawy dolny róg bramki
         if(!rotation){ //bramka pozioma, wiec y1 to grubość
             y1 = int(y0+0.05*imageSize.width);
             x1 = int(x0+imageSize.width*length_gate);
-
-
-            CheckGateAndCounter( x0,  y0,  x1,  y1,  centers);
-
+            checkGateAndCounter( x0,  y0,  x1,  y1,  centers);
             if(gateIsEmpty){
-                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1)
+                              ,cv::Scalar(255,0,0),3);
             }
             else{
-                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(0,255,0),3);
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1)
+                              ,cv::Scalar(0,255,0),3);
             }
-
         }
         else{ //bramka pionowa, wiec x1 to grubość
             x1 = int(x0+0.05*imageSize.width);
             y1 = int(y0+imageSize.height*length_gate);
-            CheckGateAndCounter( x0,  y0,  x1,  y1,  centers);
+            checkGateAndCounter( x0,  y0,  x1,  y1,  centers);
 
             if(gateIsEmpty){
-                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(255,0,0),3);
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1)
+                              ,cv::Scalar(255,0,0),3);
             }
             else{
-                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1),cv::Scalar(0,255,0),3);
+                cv::rectangle(image,cv::Point(x0,y0),cv::Point(x1,y1)
+                              ,cv::Scalar(0,255,0),3);
             }
-
-
         }
     }
 }
 
-void MainWindow::CheckGateAndCounter(const int x0, const int y0, const int x1, const int y1, const std::vector<cv::Point2f> &centers)
+void MainWindow::checkGateAndCounter(const int x0, const int y0, const int x1
+                                     , const int y1
+                                     , const std::vector<cv::Point2f> &centers)
 {
-    bool ObjectInGate = false;
+    bool objectInGate = false;
     int xp,yp;
     for( size_t i = 0; i< centers.size(); i++ )
-     {
+    {
         xp = int(centers[i].x);
         yp = int(centers[i].y);
 
         if(x0 < xp && xp < x1 && y0 < yp && yp < y1) {
-            ObjectInGate = true;
+            objectInGate = true;
         }
     }
 
-    if(ObjectInGate && gateIsEmpty){ //nowy obiekt w pustej ramce
+    if(objectInGate && gateIsEmpty){ //nowy obiekt w pustej ramce
         gateIsEmpty = false;
     }
 
-    if(!ObjectInGate  && !gateIsEmpty){//nalezy zwiekszyć licznik
-        GateCounter += 1;
-        ui->lcdCounter->display(int(GateCounter));
+    if(!objectInGate  && !gateIsEmpty){//nalezy zwiekszyć licznik
+        gateCounter += 1;
+        ui->lcdCounter->display(int(gateCounter));
         gateIsEmpty = true;
     }
 }
 
 
-
-/**
- * @brief
- *
- */
 void MainWindow::on_OpenFile_clicked()
 {
     cv::Mat frame;
 
 
 
-    file_name = QFileDialog::getOpenFileName(this,"Otwórz plik video","/home/damian/Wideo");
+    fileName = QFileDialog::getOpenFileName(this,"Otwórz plik video"
+                                            ,"/home/damian/Wideo");
 
-    if(!video.open(file_name.toStdString())){
-        QMessageBox::critical(this,"Nie wczytno pliku video!","Upewnij się czy wybrany plik jest plikiem video.");
+    if(!video.open(fileName.toStdString())){
+        QMessageBox::critical(this,"Nie wczytno pliku video!"
+                              ,"Upewnij się czy wybrany plik jest plikiem video.");
         return;
     }
     ui->PlayButton->setEnabled(true);
@@ -395,14 +355,15 @@ void MainWindow::on_OpenFile_clicked()
 
     //wyświetlamy pierwszą ramkę i zmienamy rozmiar okna
     video >> frame;
-    QImage qimg(frame.data, frame.cols, frame.rows,  static_cast<int>(frame.step), QImage::Format_RGB888);
+    QImage qimg(frame.data, frame.cols, frame.rows,  static_cast<int>(frame.step)
+                , QImage::Format_RGB888);
     leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
     ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
 
     frame.release();
     video.release();
-    SetPause = true;
-    PlayVideo();
+    setPause = true;
+    playVideo();
 
     ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
     ui->StopButton->setEnabled(false);
@@ -410,11 +371,6 @@ void MainWindow::on_OpenFile_clicked()
 }
 
 
-
-/**
- * @brief
- *
- */
 void MainWindow::on_StopButton_clicked()
 {
     video.release();
@@ -441,38 +397,37 @@ void MainWindow::on_paramButton_clicked()
     parWin.show();
 }
 
-void MainWindow::on_paramWindow_KernelSize_set(int position)
+void MainWindow::paramWindow_KernelSize_set(int position)
 {
     kernelSize.width = kernelSize.height = position;
 }
 
-void MainWindow::on_paramWindow_Treshold_set(int position)
+void MainWindow::paramWindow_Treshold_set(int position)
 {
-    TresholdValue = position;
+    tresholdValue = position;
 }
 
-void MainWindow::on_paramWindow_GaussFilter_set(bool option)
+void MainWindow::paramWindow_GaussFilter_set(bool option)
 {
     setGaussianFilter = option;
 }
 
-void MainWindow::on_paramWindow_FillHoles_set(bool option)
+void MainWindow::paramWindow_FillHoles_set(bool option)
 {
-    FillHoles = option;
+    fillHoles = option;
 }
 
 
 
 void MainWindow::on_PlayButton_clicked()
 {
-    if(SetPause){
-        SetPause = false;
-          ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPause));
+    if(setPause){
+        setPause = false;
+        ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPause));
     }
     else {
-        SetPause = true;
-          ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
-
+        setPause = true;
+        ui->PlayButton->setIcon(style()->standardIcon(QStyle::StandardPixmap::SP_MediaPlay));
     }
 }
 
@@ -486,62 +441,59 @@ void MainWindow::on_CameraButton_clicked()
     cv::Mat originalFrame,referenceFrame,binaryFrame,finalFrame;
     cv::Mat kernel;
     std::vector<std::vector<cv::Point> > finalContours,filledContours;
-   cv::Mat fgMaskMOG2; //fg mask fg mask generated by MOG2 method
-   cv::Ptr<cv::BackgroundSubtractorMOG2> pMOG2;
-   pMOG2 = cv::createBackgroundSubtractorMOG2(); //MOG2 Background subtractor
+    cv::Mat fgMaskMOG2; //fg mask fg mask generated by MOG2 method
+    cv::Ptr<cv::BackgroundSubtractorMOG2> pMOG2;
+    pMOG2 = cv::createBackgroundSubtractorMOG2(); //MOG2 Background subtractor
 
+    cv::VideoCapture cap(0); //przechwytujemy strumien z kamery
 
-     cv::VideoCapture cap(0); //przechwytujemy strumien z kamery
-
-     if(!cap.isOpened()){  // check if we succeeded
-            qDebug("Nie znaleziono kamery.");
-         return ;
-}
+    if(!cap.isOpened()){  // check if we succeeded
+        qDebug("Nie znaleziono kamery.");
+        return ;
+    }
     video = cap;
     video >> originalFrame;
-    // tempframe = frame.clone();
     while(video.isOpened()){
         //sprawdzamy czy jest pauza
-        if(!SetPause){
+        if(!setPause){
             video >> originalFrame;
             pMOG2->apply(originalFrame,fgMaskMOG2);
         }
-
-
 
         ui->leftView->fitInView(&leftPixmap,Qt::KeepAspectRatioByExpanding);
         ui->rightView->fitInView(&rightPixmap,Qt::KeepAspectRatioByExpanding);
         if(!originalFrame.empty()){
 
             /*przetwarzamy i wyswietlamy ramki*/
-
-
-           //cv::absdiff(originalFrame,referenceFrame,binaryFrame);
             binaryFrame = fgMaskMOG2.clone();
             if(setGaussianFilter){
                 cv::GaussianBlur(binaryFrame,binaryFrame, cv::Size(5,5),20);
             }
-            //cv::cvtColor(binaryFrame, binaryFrame, cv::COLOR_BGR2GRAY);
-            //cv::threshold(binaryFrame,binaryFrame,TresholdValue,255,cv::THRESH_BINARY);
+
             if(kernelSize.width > 0){
                 kernel.release();
                 kernel  = cv::getStructuringElement(cv::MORPH_RECT,kernelSize);
                 cv::erode(binaryFrame,binaryFrame,kernel);//erozja
-                cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel); // zamkniecie (dylatacja -> erozja)
+                // zamkniecie (dylatacja -> erozja)
+                cv::morphologyEx(binaryFrame,binaryFrame,cv::MORPH_CLOSE,kernel);
             }
 
             //znajdujemy, łączymy i rysujemy krawędzie
-
-            if(FillHoles){
-                cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+            if(fillHoles){
+                cv::findContours(binaryFrame,filledContours,cv::RETR_EXTERNAL
+                                 ,cv::CHAIN_APPROX_SIMPLE);
                 for(size_t i = 0 ; i < filledContours.size() ; i++){
-                    cv::drawContours(binaryFrame,filledContours,int(i),cv::Scalar(255,255,255),cv::FILLED);
+                    cv::drawContours(binaryFrame,filledContours,int(i)
+                                     ,cv::Scalar(255,255,255),cv::FILLED);
                 }
             }
-            cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL,cv::CHAIN_APPROX_SIMPLE);
+            cv::findContours(binaryFrame,finalContours,cv::RETR_EXTERNAL
+                             ,cv::CHAIN_APPROX_SIMPLE);
 
-            QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows,  static_cast<int>(binaryFrame.step), QImage::Format_Grayscale8);
-            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()) );
+            QImage qimg2(binaryFrame.data, binaryFrame.cols, binaryFrame.rows
+                         ,static_cast<int>(binaryFrame.step)
+                         ,QImage::Format_Grayscale8);
+            rightPixmap.setPixmap(QPixmap::fromImage(qimg2.rgbSwapped()));
 
 
             finalFrame = originalFrame.clone();
@@ -555,9 +507,10 @@ void MainWindow::on_CameraButton_clicked()
             cv::drawContours(finalFrame,hull,-1,cv::Scalar(134,3,255),1);
 
 
-            QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows, static_cast<int>(finalFrame.step), QImage::Format_RGB888);
-            leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()) );
-
+            QImage qimg(finalFrame.data, finalFrame.cols, finalFrame.rows
+                        , static_cast<int>(finalFrame.step)
+                        , QImage::Format_RGB888);
+            leftPixmap.setPixmap(QPixmap::fromImage(qimg.rgbSwapped()));
 
             if(cv::waitKey(30) >= 0) break;
         }
@@ -578,39 +531,39 @@ void MainWindow::on_CameraButton_clicked()
 
 void MainWindow::on_upButton_clicked()
 {
-    y_gate -= STEP;
-    if(y_gate <= 0 ){
-        y_gate = 0;
+    yGate -= STEP_GATE_POSITION;
+    if(yGate <= 0 ){
+        yGate = 0;
     }
 }
 
 void MainWindow::on_downButton_clicked()
 {
-    y_gate += STEP;
-    if(y_gate >= 1){
-        y_gate = 1;
+    yGate += STEP_GATE_POSITION;
+    if(yGate >= 1){
+        yGate = 1;
     }
 }
 
 void MainWindow::on_leftButton_clicked()
 {
-    x_gate -= STEP;
-    if(x_gate < 0){
-        x_gate = 0;
+    xGate -= STEP_GATE_POSITION;
+    if(xGate < 0){
+        xGate = 0;
     }
 }
 
 void MainWindow::on_rightButton_clicked()
 {
-    x_gate += STEP;
-    if(x_gate > 1){
-        x_gate = 1;
+    xGate += STEP_GATE_POSITION;
+    if(xGate > 1){
+        xGate = 1;
     }
 }
 
 void MainWindow::on_thinButton_clicked()
 {
-    length_gate += STEP;
+    length_gate += STEP_GATE_POSITION;
     if(length_gate > 1){
         length_gate = 0;
     }
@@ -628,6 +581,6 @@ void MainWindow::on_rotateButton_clicked()
 
 void MainWindow::on_clearCounterButton_clicked()
 {
-    GateCounter = 0;
+    gateCounter = 0;
     ui->lcdCounter->display(0);
 }

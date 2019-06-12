@@ -25,7 +25,6 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
 
-#define STEP 0.1 //krok o jaki zmieniamy połozenie bramki
 
 #include <vector>
 
@@ -74,6 +73,9 @@ void closeEvent(QCloseEvent *event);
 void keyPressEvent(QKeyEvent * event);
 
 private:
+const double STEP_GATE_POSITION  = 0.1;
+const unsigned int MAX_FRAMES = 128;
+const unsigned int MIN_FRAMES = 30;
 /**
  * @brief Funkcja wylicza średni obraz tła z pliku video.
  *
@@ -83,7 +85,8 @@ private:
  *  true  - sukces
  *  false - nie udało się wyliczyć średniej ramki tła
  */
-bool ComputeAverageBacgroundFrame(unsigned int NumberOfFrames,cv::Mat & avrFrame);
+bool computeAverageBacgroundFrame(unsigned int numberOfFrames
+                                  ,cv::Mat & avrFrame);
 
 /**
  * @brief Zwiększa intensywność barw obrazu
@@ -96,7 +99,8 @@ cv::Mat equalizeIntensity(const cv::Mat& inputImage);
 /**
  * @brief Mapy pikselowe, na których wyswietlamy obrazy
  */
-QGraphicsPixmapItem leftPixmap,rightPixmap;
+QGraphicsPixmapItem leftPixmap;
+QGraphicsPixmapItem rightPixmap;
 
 /**
  * @brief Uchwyt na plik video, który otwieramy lub bierzemy z kamery
@@ -105,15 +109,15 @@ cv::VideoCapture video;
 /**
  * @brief poziom progowania (od 0 do 255)
  */
-int TresholdValue = 0;
+int tresholdValue = 0;
 /**
  * @brief Określa czy film jest spauzowany
  */
-bool SetPause = false;
+bool setPause = false;
 /**
  * @brief Określa czy wypełnionio dziury
  */
-bool FillHoles = false;
+bool fillHoles = false;
 /**
  * @brief Określa czy obraz filtrujemy (filtr Gaussa)
  */
@@ -129,20 +133,20 @@ ParamWindow parWin; /**< TODO: describe */
 /**
  * @brief Nazwa pliku wideo, który otwieramy
  */
-QString file_name;
+QString fileName;
 /**
  * @brief Odtawrza film, przetwarza go i wyświetla
  * @return 0 jeżeli sukces; -1 jeżeli błąd
  */
-int PlayVideo(void);
+int playVideo(void);
 /**
  * @brief x_gate Współrzędna pozioma bramki w zakresie od 0.0 do 1.0
  */
-double x_gate;
+double xGate;
 /**
  * @brief y_gate Współrzędna pionowa bramki w zakresie od 0.0 do 1.0
  */
-double y_gate;
+double yGate;
 /**
  * @brief length_gate Długość bramki w zakresie od 0.0 do 1.0
  */
@@ -167,11 +171,12 @@ bool gateIsEmpty;
  * @param y1 prawy dolny róg bramki
  * @param centers środki okręgów opisanych na wykrytych obiketach
  */
-void CheckGateAndCounter(const int x0, const int y0,const int x1, const int y1, const std::vector<cv::Point2f> &centers);
+void checkGateAndCounter(const int x0, const int y0,const int x1, const int y1
+                         ,const std::vector<cv::Point2f> &centers);
 /**
  * @brief GateCounter licznik obiektów, które zostały wykryte w bramce
  */
-unsigned int GateCounter;
+unsigned int gateCounter;
 
 
 private slots:
@@ -194,12 +199,6 @@ private slots:
      * @param checked
      */
     void on_BinaryView_clicked(bool checked);
-
-
-
-
-
-
     /**
      * @brief
      *
@@ -211,25 +210,25 @@ private slots:
      *
      * @param position
      */
-    void on_paramWindow_KernelSize_set(int position);
+    void paramWindow_KernelSize_set(int position);
     /**
      * @brief
      *
      * @param position
      */
-    void on_paramWindow_Treshold_set(int position);
+    void paramWindow_Treshold_set(int position);
     /**
      * @brief
      *
      * @param option
      */
-    void on_paramWindow_GaussFilter_set(bool option);
+    void paramWindow_GaussFilter_set(bool option);
     /**
      * @brief
      *
      * @param option
      */
-    void on_paramWindow_FillHoles_set(bool option);
+    void paramWindow_FillHoles_set(bool option);
 
 
 
@@ -247,16 +246,40 @@ private slots:
 
     void on_upButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_downButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_leftButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_rightButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_thinButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_rotateButton_clicked();
 
+    /**
+     * @brief
+     *
+     */
     void on_clearCounterButton_clicked();
 
 private:

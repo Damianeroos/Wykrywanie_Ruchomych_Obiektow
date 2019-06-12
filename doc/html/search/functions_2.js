@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['_7emainwindow',['~MainWindow',['../class_main_window.html#ae98d00a93bc118200eeef9f9bba1dba7',1,'MainWindow']]]
+  ['gaussianfilterset',['GaussianFilterSet',['../class_param_window.html#ab331c6c4628afa7aa99ea1bdc317136b',1,'ParamWindow']]]
 ];

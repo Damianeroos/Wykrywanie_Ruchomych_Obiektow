@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['ui',['Ui',['../namespace_ui.html',1,'Ui'],['../class_main_window.html#a35466a70ed47252a0191168126a352a5',1,'MainWindow::ui()'],['../class_param_window.html#a375418ca4eda09ded3838b3c0f10f03e',1,'ParamWindow::ui()']]]
+  ['testy_2edox',['testy.dox',['../testy_8dox.html',1,'']]],
+  ['tresholdchanged',['tresholdChanged',['../class_param_window.html#a4f9c90896c484d4157f1d77e03fb2fc1',1,'ParamWindow']]],
+  ['tresholdvalue',['tresholdValue',['../class_main_window.html#a21bb63d5671fa44631ca7ebacc8dcb35',1,'MainWindow::tresholdValue()'],['../class_param_window.html#a9661e62902380ab361b81416d5f93013',1,'ParamWindow::tresholdValue()']]]
 ];

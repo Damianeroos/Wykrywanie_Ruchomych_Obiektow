@@ -1,0 +1,4 @@
+<map id="MainWindow::on_CameraButton_clicked" name="MainWindow::on_CameraButton_clicked">
+<area shape="rect" id="node2" href="$class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907" title="drawGate funkcja rysuje bramkę na obrazie " alt="" coords="264,13,425,39"/>
+<area shape="rect" id="node3" href="$class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a" title="CheckGateAndCounter sprawdza czy obiekt jest w bramce, aktualizauje zmienna globalna gateIsEmpty i ua..." alt="" coords="473,5,664,47"/>
+</map>

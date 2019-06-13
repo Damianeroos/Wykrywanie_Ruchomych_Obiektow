@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['setgaussianfilter',['setGaussianFilter',['../class_main_window.html#af5a6a0b36d4865c9ed61a964dd4ab7ba',1,'MainWindow']]],
-  ['setpause',['setPause',['../class_main_window.html#a3a7f34328de8ceacbee3a806c9992367',1,'MainWindow']]],
-  ['step_5fgate_5fposition',['STEP_GATE_POSITION',['../class_main_window.html#aca49c8221ab9e4496d00977b783da119',1,'MainWindow']]]
+  ['readme_2emd',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rightpixmap',['rightPixmap',['../class_main_window.html#abc513f094e95117ae590bb9bdccfd9fa',1,'MainWindow']]],
+  ['rotation',['rotation',['../class_main_window.html#a79b2d63fcb9cac50485fd8a02a114c25',1,'MainWindow']]]
 ];

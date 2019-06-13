@@ -1,6 +1,10 @@
 var NAVTREE =
 [
   [ "Wykrywanie Ruchomych Obiektów", "index.html", [
+    [ "Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika.", "index.html", [
+      [ "Uwaga do korzystania z aplikacji", "index.html#uwaga", null ],
+      [ "Testy", "index.html#testy", null ]
+    ] ],
     [ "WykrywanieObiektow", "md__r_e_a_d_m_e.html", null ],
     [ "Namespaces", null, [
       [ "Namespace List", "namespaces.html", "namespaces" ]

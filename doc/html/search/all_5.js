@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['kernelsize',['kernelSize',['../class_main_window.html#ab7da1dc0db3c9ef2cd77d9e0e7be96fb',1,'MainWindow::kernelSize()'],['../class_param_window.html#a412914c69d335cd98bd6533da470cdf1',1,'ParamWindow::kernelSize()']]],
-  ['kernelsizechanged',['kernelSizeChanged',['../class_param_window.html#abb3ac3695d7487ff87a94373313a679a',1,'ParamWindow']]],
-  ['keypressevent',['keyPressEvent',['../class_main_window.html#a9c4f542263838b9ecd06eae839a42a34',1,'MainWindow']]]
+  ['gatecounter',['gateCounter',['../class_main_window.html#a43fdfea8b34a57b7ea52c1fbd7f0b495',1,'MainWindow']]],
+  ['gateisempty',['gateIsEmpty',['../class_main_window.html#a1fb3e76e233fcce941fccc5eac60a89f',1,'MainWindow']]],
+  ['gaussianfilterset',['gaussianFilterSet',['../class_param_window.html#a652ede9207c0dab866762926c219e8c5',1,'ParamWindow']]]
 ];

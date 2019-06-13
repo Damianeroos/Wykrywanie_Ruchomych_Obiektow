@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['tresholdchanged',['tresholdChanged',['../class_param_window.html#a4f9c90896c484d4157f1d77e03fb2fc1',1,'ParamWindow']]],
-  ['tresholdvalue',['tresholdValue',['../class_main_window.html#a21bb63d5671fa44631ca7ebacc8dcb35',1,'MainWindow::tresholdValue()'],['../class_param_window.html#a9661e62902380ab361b81416d5f93013',1,'ParamWindow::tresholdValue()']]]
+  ['setgaussianfilter',['setGaussianFilter',['../class_main_window.html#af5a6a0b36d4865c9ed61a964dd4ab7ba',1,'MainWindow']]],
+  ['setpause',['setPause',['../class_main_window.html#a3a7f34328de8ceacbee3a806c9992367',1,'MainWindow']]],
+  ['step_5fgate_5fposition',['STEP_GATE_POSITION',['../class_main_window.html#aca49c8221ab9e4496d00977b783da119',1,'MainWindow']]]
 ];

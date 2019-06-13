@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['leftpixmap',['leftPixmap',['../class_main_window.html#a2b40bc512a26988672ad63fbefd2a42b',1,'MainWindow']]],
-  ['length_5fgate',['length_gate',['../class_main_window.html#a38ea5679e282d41030243dea1e75f4e8',1,'MainWindow']]]
+  ['kernelsize',['kernelSize',['../class_main_window.html#ab7da1dc0db3c9ef2cd77d9e0e7be96fb',1,'MainWindow::kernelSize()'],['../class_param_window.html#a412914c69d335cd98bd6533da470cdf1',1,'ParamWindow::kernelSize()']]],
+  ['kernelsizechanged',['kernelSizeChanged',['../class_param_window.html#abb3ac3695d7487ff87a94373313a679a',1,'ParamWindow']]],
+  ['keypressevent',['keyPressEvent',['../class_main_window.html#a9c4f542263838b9ecd06eae839a42a34',1,'MainWindow']]]
 ];

@@ -1,0 +1,17 @@
+/*!
+\mainpage Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika.
+
+\author Damian Rakowski
+\date 12.06.19
+\version 3.0
+
+Aplikacja wykrywa ruchomy obiekt, który znajduje się na obrazie i opisuje go na różowym okręgu z zielonymi konturami. Wykryty obiekt może być zliczony przez wirtualną bramkę, której rozmiary oraz położenie ustawia użytkownik poprzez klawisza WSADRT (oraz przyciski w prawym dolnym rogu). Kiedy obiekt przejedzie przez bramkę, zwieksza się wartość licznika w prawym dolnym. Licznik resetujemy przyciskiem umieszczonuym pod licznikiem. Bramka ziemia swój kolor na zielony gdy jakiś znajduje się wewnątrz.Aplikacja umożliwia wczytywanie plików avi,mp4 oraz webm. Dodatkową funkcjonalnością jest pobieranie obrazu z kamery i przetwarzanie go w czasie rzeczywistym. Aplikacja kożysta z algorytmu MOG4, którego parametry możemy ustawić w dodatkowym okienku.
+
+\section uwaga Uwaga do korzystania z aplikacji
+
+Podczas badań zauważono, że algorytm subtracji jest bardzo wrażliwy na szybką zmianę wartości kolorów, np. : cienie rzucane przez przedmioty, automatyczne ustawianie ostrości przez kamerę, odbicia świateł na elementach obrazu. Wszystkie powyższe czynniki prowadzą do nieprawidłowej pracy algorytmu. Aplikacja działa dobrze tylko dla warunków "laboratoryjnych", gdzie jest stałe oświetlenie, przedmioty nie rzucają dużego cienia ani nie generują światła (lampy w samochodach).
+
+
+
+
+*/

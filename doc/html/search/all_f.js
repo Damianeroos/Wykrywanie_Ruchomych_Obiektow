@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wykrywanieobiektow',['WykrywanieObiektow',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['video',['video',['../class_main_window.html#a0eff1d86b0761ce45949943c39c97654',1,'MainWindow']]]
 ];

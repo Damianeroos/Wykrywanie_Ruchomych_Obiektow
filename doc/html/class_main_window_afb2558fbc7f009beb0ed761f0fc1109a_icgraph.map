@@ -1,5 +1,6 @@
 <map id="MainWindow::checkGateAndCounter" name="MainWindow::checkGateAndCounter">
-<area shape="rect" id="node2" href="$class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907" title="drawGate funkcja rysuje bramkę na obrazie " alt="" coords="244,13,405,39"/>
-<area shape="rect" id="node3" href="$class_main_window.html#af30186cc445125b50835b073091c5fa0" title="Odtawrza film, przetwarza go i wyświetla. " alt="" coords="453,13,616,39"/>
-<area shape="rect" id="node4" href="$class_main_window.html#a836f789d3efd6d8b8fc669a11c24a255" title="Otwiera eksplorer wczytytywania plików, zapisuje wybrany plik i sprawdza poprawność formatu..." alt="" coords="664,5,843,47"/>
+<area shape="rect" id="node2" href="$class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907" title="drawGate funkcja rysuje bramkę na obrazie " alt="" coords="244,42,405,69"/>
+<area shape="rect" id="node3" href="$class_main_window.html#af30186cc445125b50835b073091c5fa0" title="Odtawrza film, przetwarza go i wyświetla. " alt="" coords="477,13,640,39"/>
+<area shape="rect" id="node5" href="$class_main_window.html#a5b948ab2bd8fa0352e1a7ab620563125" title="Wywołuje funkcję przetwarzania i odtwarzania obrazu z kamery. " alt="" coords="453,64,664,105"/>
+<area shape="rect" id="node4" href="$class_main_window.html#a836f789d3efd6d8b8fc669a11c24a255" title="Otwiera eksplorer wczytytywania plików, zapisuje wybrany plik i sprawdza poprawność formatu..." alt="" coords="712,5,891,47"/>
 </map>

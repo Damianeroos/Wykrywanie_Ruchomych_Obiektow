@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wykrywanieobiektow',['WykrywanieObiektow',['../md__r_e_a_d_m_e.html',1,'']]]
+  ['agresor2000_20_2d_20aplikacja_20wykrywająca_20ruchome_20obiekty_20z_20możliwością_20wirtualnego_20licznika_2e',['Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika.',['../index.html',1,'']]]
 ];

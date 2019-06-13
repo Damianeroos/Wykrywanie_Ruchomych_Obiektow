@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Wykrywanie Ruchomych Obiektów: Main Page</title>
+<title>Wykrywanie Ruchomych Obiektów: Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika.</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,10 +82,20 @@ $(document).ready(function(){initNavTree('index.html','');});
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Wykrywanie Ruchomych Obiektów Documentation</div>  </div>
+<div class="title">Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika. </div>  </div>
 </div><!--header-->
 <div class="contents">
-</div><!-- contents -->
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Damian Rakowski </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>12.06.19 </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>3.0</dd></dl>
+<p>Aplikacja wykrywa ruchomy obiekt, który znajduje się na obrazie i opisuje go na różowym okręgu z zielonymi konturami. Wykryty obiekt może być zliczony przez wirtualną bramkę, której rozmiary oraz położenie ustawia użytkownik poprzez klawisza WSADRT (oraz przyciski w prawym dolnym rogu). Kiedy obiekt przejedzie przez bramkę, zwieksza się wartość licznika w prawym dolnym. Licznik resetujemy przyciskiem umieszczonuym pod licznikiem. Bramka ziemia swój kolor na zielony gdy jakiś znajduje się wewnątrz.Aplikacja umożliwia wczytywanie plików avi,mp4 oraz webm. Dodatkową funkcjonalnością jest pobieranie obrazu z kamery i przetwarzanie go w czasie rzeczywistym. Aplikacja kożysta z algorytmu MOG4, którego parametry możemy ustawić w dodatkowym okienku.</p>
+<h1><a class="anchor" id="uwaga"></a>
+Uwaga do korzystania z aplikacji</h1>
+<p>Podczas badań zauważono, że algorytm subtracji jest bardzo wrażliwy na szybką zmianę wartości kolorów, np. : cienie rzucane przez przedmioty, automatyczne ustawianie ostrości przez kamerę, odbicia świateł na elementach obrazu. Wszystkie powyższe czynniki prowadzą do nieprawidłowej pracy algorytmu. Aplikacja działa dobrze tylko dla warunków "laboratoryjnych", gdzie jest stałe oświetlenie, przedmioty nie rzucają dużego cienia ani nie generują światła (lampy w samochodach).</p>
+<h1><a class="anchor" id="testy"></a>
+Testy</h1>
+<p><a href="testy.pdf" target="_blank"><b>Testy manualne</b></a> </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

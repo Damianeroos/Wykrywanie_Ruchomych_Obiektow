@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['gatecounter',['gateCounter',['../class_main_window.html#a43fdfea8b34a57b7ea52c1fbd7f0b495',1,'MainWindow']]],
-  ['gateisempty',['gateIsEmpty',['../class_main_window.html#a1fb3e76e233fcce941fccc5eac60a89f',1,'MainWindow']]],
-  ['gaussianfilterset',['gaussianFilterSet',['../class_param_window.html#a652ede9207c0dab866762926c219e8c5',1,'ParamWindow']]]
+  ['filename',['fileName',['../class_main_window.html#a06968aebc42a16ab51c5888b4784075d',1,'MainWindow']]],
+  ['fillholes',['fillHoles',['../class_main_window.html#a57ab022b8536049c47df93fddccb884a',1,'MainWindow::fillHoles()'],['../class_param_window.html#a34b1dbfde3f703dc63a055540d08ccfd',1,'ParamWindow::fillHoles()']]],
+  ['fillholesset',['fillHolesSet',['../class_param_window.html#adfc7690ce859d2c5ef5f75f792b1ba51',1,'ParamWindow']]]
 ];

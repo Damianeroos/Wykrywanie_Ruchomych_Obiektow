@@ -85,16 +85,17 @@ $(document).ready(function(){initNavTree('md__r_e_a_d_m_e.html','');});
 <div class="title">WykrywanieObiektow </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Celem projektu jest zaimplementowanie aplikacji okienkowej, która wczyta plik video zapisany na dysku lub obraz z kamery i korzystając z algorytmów przetwarzania obrazów wykryje nowy/ruchomy obiekt i oznaczy go. Przetworzony plik video zostanie zapisany, a następnie wyświetlony w oknie aplikacji. W zależności od postępu prac nad aplikacją planowane jest dodanie nowych funkcjonalności, takich jak wyświetlanie przetworzonych sekwencji obrazów w czasie rzeczywistym, śledzenie wykrytego obiektu lub rozpoznawanie obiektu (za pomocą gotowych sieci neuronowych). Do wykrywania ruchomego obiektu na scenie wybrano metodę "background subtraction".</p>
+<div class="textblock"><p>Celem projektu jest zaimplementowanie aplikacji okienkowej, która wczyta plik video zapisany na dysku lub obraz z kamery i korzystając z algorytmów przetwarzania obrazów wykryje nowy/ruchomy obiekt i oznaczy go. Przetworzony plik video zostanie zapisany, a następnie wyświetlony w oknie aplikacji. Obraz modyfikowany jest w czasie rzeczywistym. Nową funkcjonalnością jest ręcznie ustawiana wirtualna bramka, która zlicza przejazdy wykrytych obiektów. Do wykrywania ruchomego obiektu na scenie wybrano metodę "background subtraction" MOg2.</p>
 <p>Narzędzia:</p><ul>
 <li>system operacyjny: Ubuntu 18.04</li>
-<li>edytor tekstu: emacs</li>
+<li>edytor tekstu: QtCreator</li>
 <li>język programowania, kompilator: C++, g++</li>
 <li>dokumentacja html: Doxygen</li>
 <li>aplikacja okienkowa: biblioteki Qt</li>
-<li>przetwarzanie pliku video: biblioteka OpenCV + OpenCL (umożliwia wykorzystanie gpu)</li>
+<li>przetwarzanie pliku video: biblioteka OpenCV</li>
 <li>system kotroli wersji git: gitHub</li>
 </ul>
+<p>Opis katalogów : ./testy - zawiera opis przeprowadzonych testów manualnych ./src - kody źródłowe klas ./inc - pliki nagółówkowe klas ./doc - folder z dokumentacją html</p>
 <p>Bibliografia: <a href="https://sound.eti.pg.gda.pl/student/pdio/pdio05_detekcja_sledzenie_obiektow.pdf">https://sound.eti.pg.gda.pl/student/pdio/pdio05_detekcja_sledzenie_obiektow.pdf</a> </p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->

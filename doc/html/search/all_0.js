@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['checkgateandcounter',['checkGateAndCounter',['../class_main_window.html#afb2558fbc7f009beb0ed761f0fc1109a',1,'MainWindow']]],
-  ['closeevent',['closeEvent',['../class_main_window.html#a4e20a4a065fbb0e4d3532a45a0a91425',1,'MainWindow']]],
-  ['computeaveragebacgroundframe',['computeAverageBacgroundFrame',['../class_main_window.html#a2b2489e2441e51fef78f01d02810089e',1,'MainWindow']]]
+  ['agresor2000_20_2d_20aplikacja_20wykrywająca_20ruchome_20obiekty_20z_20możliwością_20wirtualnego_20licznika_2e',['Agresor2000 - Aplikacja wykrywająca ruchome obiekty z możliwością wirtualnego licznika.',['../index.html',1,'']]]
 ];

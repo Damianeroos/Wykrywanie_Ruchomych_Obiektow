@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['equalizeintensity',['equalizeIntensity',['../class_main_window.html#a3a148249a9a10f139ea3307e168e8720',1,'MainWindow']]]
+  ['drawgate',['drawGate',['../class_main_window.html#a1d7674f33d56e5ce5c5dae947380a907',1,'MainWindow']]]
 ];

@@ -23,5 +23,6 @@ https://sound.eti.pg.gda.pl/student/pdio/pdio05_detekcja_sledzenie_obiektow.pdf
 
 ```diff
 - Do poprawnego działania aplikacji należy zainstalować bibliotekę opencv
-```
 https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html
+```
+

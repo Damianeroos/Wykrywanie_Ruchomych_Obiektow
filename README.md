@@ -20,3 +20,5 @@ Opis katalogów :
 
 Bibliografia:
 https://sound.eti.pg.gda.pl/student/pdio/pdio05_detekcja_sledzenie_obiektow.pdf
+
+<font color="red">This is some text!</font>

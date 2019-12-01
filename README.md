@@ -22,8 +22,6 @@ Bibliografia:
 https://sound.eti.pg.gda.pl/student/pdio/pdio05_detekcja_sledzenie_obiektow.pdf
 
 ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
+- Do poprawnego działania aplikacji należy zainstalować bibliotekę opencv
 ```
+https://docs.opencv.org/master/d7/d9f/tutorial_linux_install.html
